@@ -1,13 +1,26 @@
 "use client"
 
-import { useState, useEffect, useMemo } from "react"
-import { Search, Calendar, User, BookOpen, Clock, ArrowRight, Tag, Flame, Star, Filter, X } from "lucide-react"
+import { useState, useEffect } from "react"
+import {
+  Sparkles,
+  Search,
+  Calendar,
+  User,
+  Tag,
+ 
+  BookOpen,
+  ImageIcon
+} from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+
+// Define types
 type BlogCategory = "MEDITATION" | "ASTROLOGY" | "SPIRITUALITY" | "WELLNESS" | "MINDFULNESS" | "PERSONAL_GROWTH"
+type BlogTag = "BEGINNERS" | "ADVANCED" | "TECHNIQUES" | "PHILOSOPHY" | "PRACTICE" | "SCIENCE" | "HISTORY" | "LIFESTYLE" | "HEALING" | "ZODIAC" | "PLANETS" | "CHAKRAS"
 
 interface Blog {
   id: string
@@ -16,336 +29,336 @@ interface Blog {
   content: string
   published: boolean
   category: BlogCategory | null
-  tags: string[]
+  tags: BlogTag[]
   banner: string | null
   createdAt: string
   updatedAt: string
-  author: { name: string | null } | null
+  author: {
+    name: string | null
+  } | null
   authorId: string
 }
 
+// Blog categories from our enum
 const categories = [
-  { id: "all", name: "All", emoji: "✨", color: "bg-slate-800 text-white" },
-  { id: "MEDITATION", name: "Meditation", emoji: "🧘", color: "bg-indigo-700 text-white" },
-  { id: "ASTROLOGY", name: "Astrology", emoji: "🔮", color: "bg-purple-700 text-white" },
-  { id: "SPIRITUALITY", name: "Spirituality", emoji: "🌟", color: "bg-amber-700 text-white" },
-  { id: "WELLNESS", name: "Wellness", emoji: "🌿", color: "bg-green-700 text-white" },
-  { id: "MINDFULNESS", name: "Mindfulness", emoji: "🕯️", color: "bg-teal-700 text-white" },
-  { id: "PERSONAL_GROWTH", name: "Growth", emoji: "🌱", color: "bg-emerald-700 text-white" },
+  { id: "all", name: "All Posts" },
+  { id: "MEDITATION", name: "Meditation" },
+  { id: "ASTROLOGY", name: "Astrology" },
+  { id: "SPIRITUALITY", name: "Spirituality" },
+  { id: "WELLNESS", name: "Wellness" },
+  { id: "MINDFULNESS", name: "Mindfulness" },
+  { id: "PERSONAL_GROWTH", name: "Personal Growth" },
 ]
-
-const catColors: Record<string, string> = {
-  MEDITATION: "bg-indigo-100 text-indigo-800 border-indigo-200",
-  ASTROLOGY: "bg-purple-100 text-purple-800 border-purple-200",
-  SPIRITUALITY: "bg-amber-100 text-amber-800 border-amber-200",
-  WELLNESS: "bg-green-100 text-green-800 border-green-200",
-  MINDFULNESS: "bg-teal-100 text-teal-800 border-teal-200",
-  PERSONAL_GROWTH: "bg-emerald-100 text-emerald-800 border-emerald-200",
-}
-
-const catEmoji: Record<string, string> = {
-  MEDITATION: "🧘", ASTROLOGY: "🔮", SPIRITUALITY: "🌟",
-  WELLNESS: "🌿", MINDFULNESS: "🕯️", PERSONAL_GROWTH: "🌱",
-}
-
-function readingTime(content: string) {
-  const words = content?.replace(/<[^>]*>/g, "").split(/\s+/).length || 0
-  return Math.max(1, Math.ceil(words / 200))
-}
-
-function formatDate(d: string) {
-  return new Date(d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
-}
-
-function stripHtml(html: string) {
-  return html?.replace(/<[^>]*>/g, "") || ""
-}
-
-// Featured large card
-function FeaturedCard({ blog }: { blog: Blog }) {
-  return (
-    <Link href={`/h/blog/${blog.id}`} className="group block">
-      <div className="relative h-[480px] rounded-3xl overflow-hidden shadow-2xl">
-        {blog.banner ? (
-          <Image src={blog.banner} alt={blog.title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" sizes="100vw" />
-        ) : (
-          <div className="w-full h-full bg-gradient-to-br from-primary-900 via-indigo-900 to-purple-900" />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-        <div className="absolute top-4 left-4">
-          <span className="bg-amber-500 text-black text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1 shadow-lg">
-            <Flame className="w-3 h-3" /> Featured
-          </span>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 p-8">
-          {blog.category && (
-            <span className="text-xs text-amber-300 font-semibold uppercase tracking-widest mb-3 block">
-              {catEmoji[blog.category]} {blog.category.replace("_", " ")}
-            </span>
-          )}
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-3 leading-tight group-hover:text-amber-200 transition-colors">
-            {blog.title}
-          </h2>
-          <p className="text-white/70 text-sm mb-4 line-clamp-2 max-w-2xl">{blog.description}</p>
-          <div className="flex items-center gap-4 text-white/60 text-xs">
-            <span className="flex items-center gap-1"><User className="w-3 h-3" />{blog.author?.name || "Niaadim"}</span>
-            <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{formatDate(blog.createdAt)}</span>
-            <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{readingTime(blog.content)} min read</span>
-            <span className="flex items-center gap-1 ml-auto bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white text-xs px-4 py-2 rounded-full transition-colors">
-              Read Article <ArrowRight className="w-3 h-3 ml-1" />
-            </span>
-          </div>
-        </div>
-      </div>
-    </Link>
-  )
-}
-
-// Regular blog card
-function BlogCard({ blog, featured = false }: { blog: Blog; featured?: boolean }) {
-  return (
-    <Link href={`/h/blog/${blog.id}`} className="group block h-full">
-      <article className="h-full bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col">
-        <div className="relative overflow-hidden" style={{ height: featured ? "240px" : "200px" }}>
-          {blog.banner ? (
-            <Image src={blog.banner} alt={blog.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="50vw" />
-          ) : (
-            <div className="w-full h-full bg-gradient-to-br from-primary-100 to-indigo-100 flex items-center justify-center">
-              <BookOpen className="w-12 h-12 text-primary-300" />
-            </div>
-          )}
-          {blog.category && (
-            <div className="absolute top-3 left-3">
-              <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border backdrop-blur-sm ${catColors[blog.category] || "bg-gray-100 text-gray-700"}`}>
-                {catEmoji[blog.category]} {blog.category.replace("_", " ")}
-              </span>
-            </div>
-          )}
-        </div>
-        <div className="p-5 flex flex-col flex-1">
-          <h3 className="font-bold text-gray-900 text-lg mb-2 line-clamp-2 leading-snug group-hover:text-primary-700 transition-colors">
-            {blog.title}
-          </h3>
-          <p className="text-gray-500 text-sm line-clamp-2 mb-4 flex-1">{blog.description}</p>
-          <div className="flex items-center justify-between pt-3 border-t border-gray-100 text-xs text-gray-400">
-            <div className="flex items-center gap-3">
-              <span className="flex items-center gap-1"><User className="w-3 h-3" />{blog.author?.name || "Niaadim"}</span>
-              <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{readingTime(blog.content)} min</span>
-            </div>
-            <span className="text-primary-600 font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
-              Read <ArrowRight className="w-3 h-3" />
-            </span>
-          </div>
-        </div>
-      </article>
-    </Link>
-  )
-}
-
-// Small horizontal card for sidebar
-function MiniCard({ blog }: { blog: Blog }) {
-  return (
-    <Link href={`/h/blog/${blog.id}`} className="group flex gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors">
-      <div className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-primary-100">
-        {blog.banner ? (
-          <Image src={blog.banner} alt={blog.title} width={64} height={64} className="w-full h-full object-cover" />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center"><BookOpen className="w-6 h-6 text-primary-300" /></div>
-        )}
-      </div>
-      <div className="flex-1 min-w-0">
-        <h4 className="text-sm font-semibold text-gray-800 line-clamp-2 group-hover:text-primary-700 leading-snug">{blog.title}</h4>
-        <div className="flex items-center gap-2 mt-1 text-xs text-gray-400">
-          <Calendar className="w-3 h-3" />{formatDate(blog.createdAt)}
-        </div>
-      </div>
-    </Link>
-  )
-}
 
 export default function BlogsPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [blogs, setBlogs] = useState<Blog[]>([])
-  const [loading, setLoading] = useState(true)
+  const [filteredBlogs, setFilteredBlogs] = useState<Blog[]>([])
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false)
 
+  // Fetch blogs from the API
   useEffect(() => {
-    fetch("/api/blog").then(r => r.json()).then(data => {
-      setBlogs(Array.isArray(data) ? data : [])
-      setLoading(false)
-    }).catch(() => setLoading(false))
+    const fetchBlogs = async () => {
+      try {
+        const response = await fetch("/api/blog")
+        if (!response.ok) throw new Error("Failed to fetch blogs")
+        const data = await response.json()
+        setBlogs(data)
+        setFilteredBlogs(data)
+      } catch (error) {
+        console.error("Error fetching blogs:", error)
+      }
+    }
+
+    fetchBlogs()
   }, [])
 
-  const filteredBlogs = useMemo(() => {
-    return blogs.filter(b => {
-      const q = searchQuery.toLowerCase()
-      const matchSearch = !searchQuery || b.title.toLowerCase().includes(q) || b.description?.toLowerCase().includes(q) || stripHtml(b.content).toLowerCase().includes(q)
-      const matchCat = selectedCategory === "all" || b.category === selectedCategory
-      return matchSearch && matchCat
-    })
-  }, [blogs, searchQuery, selectedCategory])
+  // Filter blogs based on search query and category
+  useEffect(() => {
+    const filtered = blogs.filter((blog) => {
+      const matchesSearch =
+        blog.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        blog.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (blog.tags && blog.tags.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase())))
 
-  const featuredPost = filteredBlogs[0]
-  const restPosts = filteredBlogs.slice(1)
-  const sidebarPosts = blogs.slice(0, 5)
+      const matchesCategory = selectedCategory === "all" || blog.category === selectedCategory
+
+      return matchesSearch && matchesCategory
+    })
+
+    setFilteredBlogs(filtered)
+  }, [searchQuery, selectedCategory, blogs])
+
+  // Format date
+  const formatDate = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = { year: "numeric", month: "long", day: "numeric" }
+    return new Date(dateString).toLocaleDateString("en-US", options)
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero */}
-      <section className="bg-gradient-to-br from-primary-950 via-primary-900 to-indigo-950 text-white py-20 px-4">
-        <div className="container mx-auto max-w-5xl text-center">
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-amber-300 text-sm px-4 py-2 rounded-full mb-6">
-            <Star className="w-4 h-4 fill-amber-300" /> Sacred Wisdom Journal
-          </div>
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 leading-tight">
-            Cosmic Insights &
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-orange-400"> Ancient Wisdom</span>
-          </h1>
-          <p className="text-white/70 text-lg max-w-2xl mx-auto mb-10">
-            Explore Vedic astrology, meditation practices, spiritual teachings, and transformational insights from Himalayan wisdom traditions.
-          </p>
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-secondary-50 to-primary-100">
+      {/* Hero Section */}
+      <section className="relative z-10 py-16 px-4 bg-gradient-to-r from-primary-100/50 to-secondary-100/50">
+        <div className="container mx-auto">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="flex justify-center mb-6">
+              <div className="relative">
+                <BookOpen className="w-16 h-16 text-primary-600" />
+                <Sparkles className="w-6 h-6 text-primary-500 absolute -top-2 -right-2" />
+              </div>
+            </div>
+            <h1 className="text-5xl md:text-6xl font-bold text-primary-900 mb-6 leading-tight">
+              Cosmic Insights & Wisdom
+            </h1>
+            <p className="text-xl text-primary-800 mb-8 max-w-3xl mx-auto">
+              Explore our collection of articles on astrology, meditation, spiritual growth, and ancient Vedic wisdom to
+              guide your journey toward self-discovery and enlightenment.
+            </p>
 
-          {/* Search */}
-          <div className="relative max-w-xl mx-auto">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/50" />
-            <input
-              type="text"
-              placeholder="Search articles..."
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-12 py-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400/50 text-sm"
-            />
-            {searchQuery && (
-              <button onClick={() => setSearchQuery("")} className="absolute right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white">
-                <X className="w-4 h-4" />
-              </button>
-            )}
+            {/* Search Bar */}
+            <div className="relative max-w-2xl mx-auto">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Search className="h-5 w-5 text-primary-500" />
+              </div>
+              <input
+                type="text"
+                placeholder="Search for articles..."
+                className="w-full pl-10 pr-4 py-3 border border-primary-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 bg-white/80 backdrop-blur-sm"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Category Pills */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-20 shadow-sm">
-        <div className="container mx-auto px-4 py-3">
-          <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-1">
-            {categories.map(cat => (
-              <button
-                key={cat.id}
-                onClick={() => setSelectedCategory(cat.id)}
-                className={`flex-shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                  selectedCategory === cat.id ? cat.color + " shadow-md scale-105" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                }`}
-              >
-                <span>{cat.emoji}</span> {cat.name}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="container mx-auto px-4 py-12 max-w-7xl">
-        {loading ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[...Array(6)].map((_, i) => (
-              <div key={i} className="bg-white rounded-2xl overflow-hidden animate-pulse">
-                <div className="h-48 bg-gray-200" />
-                <div className="p-5 space-y-3">
-                  <div className="h-4 bg-gray-200 rounded w-1/3" />
-                  <div className="h-6 bg-gray-200 rounded" />
-                  <div className="h-4 bg-gray-200 rounded w-3/4" />
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : filteredBlogs.length === 0 ? (
-          <div className="text-center py-24">
-            <div className="text-6xl mb-4">🔍</div>
-            <h3 className="text-2xl font-bold text-gray-800 mb-2">No articles found</h3>
-            <p className="text-gray-500 mb-6">Try different keywords or browse all categories</p>
-            <Button onClick={() => { setSearchQuery(""); setSelectedCategory("all") }} className="bg-primary-800 text-white hover:bg-primary-900">
-              Show All Articles
-            </Button>
-          </div>
-        ) : (
-          <div className="flex gap-10">
-            {/* Main Column */}
-            <div className="flex-1 min-w-0">
-              {/* Result Count */}
-              <div className="flex items-center justify-between mb-8">
-                <p className="text-gray-500 text-sm">
-                  <span className="font-bold text-gray-900">{filteredBlogs.length}</span> articles {selectedCategory !== "all" ? `in ${selectedCategory.replace("_"," ")}` : ""}
-                </p>
-                {(searchQuery || selectedCategory !== "all") && (
-                  <button onClick={() => { setSearchQuery(""); setSelectedCategory("all") }} className="text-primary-600 text-sm flex items-center gap-1 hover:text-primary-800">
-                    <X className="w-3 h-3" /> Clear filters
-                  </button>
-                )}
-              </div>
-
-              {/* Featured Post */}
-              {featuredPost && !searchQuery && (
-                <div className="mb-10">
-                  <FeaturedCard blog={featuredPost} />
-                </div>
-              )}
-
-              {/* Grid */}
-              {(searchQuery ? filteredBlogs : restPosts).length > 0 && (
-                <div className="grid sm:grid-cols-2 gap-6">
-                  {(searchQuery ? filteredBlogs : restPosts).map(blog => (
-                    <BlogCard key={blog.id} blog={blog} />
+      {/* Main Blog Content */}
+      <section className="relative z-10 py-12 px-4">
+        <div className="container mx-auto">
+          <div className="flex flex-col lg:flex-row gap-8">
+            {/* Sidebar - Categories (Desktop) */}
+            <div className="hidden lg:block w-64 flex-shrink-0">
+              <div className="bg-white/80 backdrop-blur-sm border border-primary-200 rounded-lg p-6 sticky top-28">
+                <h3 className="text-xl font-bold text-primary-900 mb-6">Categories</h3>
+                <ul className="space-y-3">
+                  {categories.map((category) => (
+                    <li key={category.id}>
+                      <button
+                        onClick={() => setSelectedCategory(category.id)}
+                        className={`w-full text-left px-3 py-2 rounded-md flex items-center transition-colors ${
+                          selectedCategory === category.id
+                            ? "bg-primary-100 text-primary-900 font-medium"
+                            : "text-primary-700 hover:bg-primary-50"
+                        }`}
+                      >
+                        <span>{category.name}</span>
+                      </button>
+                    </li>
                   ))}
-                </div>
-              )}
+                </ul>
+
+                {/* <div className="mt-8 pt-6 border-t border-primary-200">
+                  <h3 className="text-lg font-bold text-primary-900 mb-4">Popular Tags</h3>
+                  <div className="flex flex-wrap gap-2">
+                    <Badge className="bg-primary-100 text-primary-800 hover:bg-primary-200 cursor-pointer">advanced</Badge>
+                    <Badge className="bg-primary-100 text-primary-800 hover:bg-primary-200 cursor-pointer">astrology</Badge>
+                    <Badge className="bg-primary-100 text-primary-800 hover:bg-primary-200 cursor-pointer">
+                      planetary transits
+                    </Badge>
+                    <Badge className="bg-primary-100 text-primary-800 hover:bg-primary-200 cursor-pointer">
+                      spiritual growth
+                    </Badge>
+                    <Badge className="bg-primary-100 text-primary-800 hover:bg-primary-200 cursor-pointer">chakras</Badge>
+                    <Badge className="bg-primary-100 text-primary-800 hover:bg-primary-200 cursor-pointer">
+                      vedic wisdom
+                    </Badge>
+                  </div>
+                </div> */}
+
+                {/* <div className="mt-8 pt-6 border-t border-primary-200">
+                  <h3 className="text-lg font-bold text-primary-900 mb-4">Subscribe</h3>
+                  <p className="text-primary-800 text-sm mb-4">
+                    Get the latest articles and insights delivered straight to your inbox.
+                  </p>
+                  <div className="space-y-3">
+                    <input
+                      type="email"
+                      placeholder="Your email address"
+                      className="w-full px-3 py-2 border border-primary-200 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300"
+                    />
+                    <Button className="w-full bg-primary-600 hover:bg-primary-700 text-white">Subscribe</Button>
+                  </div>
+                </div> */}
+              </div>
             </div>
 
-            {/* Sidebar */}
-            <aside className="hidden xl:block w-80 flex-shrink-0">
-              <div className="sticky top-24 space-y-6">
-                {/* Popular Posts */}
-                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-                  <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
-                    <Flame className="w-5 h-5 text-orange-500" /> Recent Articles
-                  </h3>
-                  <div className="space-y-1">
-                    {sidebarPosts.map(blog => <MiniCard key={blog.id} blog={blog} />)}
-                  </div>
-                </div>
+            {/* Mobile Category Filter */}
+            <div className="lg:hidden mb-6">
+              <Button
+                onClick={() => setIsMobileFilterOpen(!isMobileFilterOpen)}
+                className="w-full bg-white border border-primary-200 text-primary-900 hover:bg-primary-50"
+              >
+                <Tag className="w-4 h-4 mr-2" />
+                Filter by Category
+              </Button>
 
-                {/* Categories */}
-                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-                  <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
-                    <Tag className="w-5 h-5 text-primary-600" /> Browse Topics
-                  </h3>
+              {isMobileFilterOpen && (
+                <div className="mt-4 bg-white/90 backdrop-blur-sm border border-primary-200 rounded-lg p-4">
                   <div className="flex flex-wrap gap-2">
-                    {categories.filter(c => c.id !== "all").map(cat => (
-                      <button key={cat.id} onClick={() => setSelectedCategory(cat.id)}
-                        className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                          selectedCategory === cat.id ? "bg-primary-800 text-white" : "bg-gray-100 text-gray-600 hover:bg-primary-50 hover:text-primary-800"
-                        }`}>
-                        {cat.emoji} {cat.name}
+                    {categories.map((category) => (
+                      <button
+                        key={category.id}
+                        onClick={() => setSelectedCategory(category.id)}
+                        className={`px-3 py-1 rounded-full text-sm ${
+                          selectedCategory === category.id
+                            ? "bg-primary-500 text-white"
+                            : "bg-primary-100 text-primary-800 hover:bg-primary-200"
+                        }`}
+                      >
+                        {category.name}
                       </button>
                     ))}
                   </div>
                 </div>
+              )}
+            </div>
 
-                {/* CTA */}
-                <div className="bg-gradient-to-br from-primary-900 to-indigo-900 rounded-2xl p-6 text-white text-center">
-                  <div className="text-3xl mb-3">🔮</div>
-                  <h3 className="font-bold text-lg mb-2">Get Your Reading</h3>
-                  <p className="text-white/70 text-sm mb-4">Personalized Vedic astrology consultation from Niaadim</p>
-                  <Link href="/h/appointment">
-                    <Button className="w-full bg-amber-500 hover:bg-amber-600 text-black font-semibold">
-                      Book Session →
-                    </Button>
-                  </Link>
+            {/* Blog Posts Grid */}
+            <div className="flex-1">
+              {/* Results Info */}
+              <div className="flex justify-between items-center mb-6">
+                <p className="text-primary-800">
+                  Showing <span className="font-semibold">{filteredBlogs.length}</span> articles
+                </p>
+              </div>
+
+              {/* Blog Posts */}
+              {filteredBlogs.length > 0 ? (
+                <div className="grid md:grid-cols-2 gap-6">
+                  {filteredBlogs.map((blog) => (
+                    <Card
+                      key={blog.id}
+                      className="bg-white/80 backdrop-blur-sm border-primary-200 hover:shadow-xl transition-all duration-500 overflow-hidden group pt-0 gap-2"
+                    >
+                      <div className="relative w-full aspect-video">
+                        {blog.banner ? (
+                          <Image
+                            src={blog.banner}
+                            alt={blog.title}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-primary-50 flex items-center justify-center">
+                            <ImageIcon className="w-10 h-10 text-primary-200" />
+                          </div>
+                        )}
+                      </div>
+                      <CardHeader className="pb-2">
+                        <div className="flex items-center text-sm text-primary-700 mb-2">
+                          <Calendar className="w-4 h-4 mr-1" />
+                          <span>{formatDate(blog.createdAt)}</span>
+                          {blog.category && (
+                            <>
+                              <span className="mx-2">•</span>
+                              <Badge variant="outline" className="text-xs">
+                                {blog.category.toLowerCase()}
+                              </Badge>
+                            </>
+                          )}
+                        </div>
+                        <h3 className="text-xl font-bold text-primary-900 line-clamp-2 group-hover:text-primary-700 transition-colors">
+                          {blog.title}
+                        </h3>
+                      </CardHeader>
+                      <CardContent className="pb-4">
+                        <p className="text-primary-800 line-clamp-3">{blog.description}</p>
+                        {blog.tags && blog.tags.length > 0 && (
+                          <div className="flex flex-wrap gap-2 mt-3">
+                            {blog.tags.map((tag, index) => (
+                              <span key={index} className="text-xs text-primary-700 bg-primary-50 px-2 py-1 rounded-full">
+                                #{tag.toLowerCase()}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </CardContent>
+                      <CardFooter className="flex justify-between items-center">
+                        <div className="flex items-center">
+                          <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center mr-2">
+                            <User className="w-4 h-4 text-primary-600" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-primary-900">{blog.author?.name || "Anonymous"}</p>
+                          </div>
+                        </div>
+                        <Link href={`/h/blog/${blog.id}`}>
+                          <Button size="sm" className="bg-gradient-to-r from-blue-800 to-amber-600 hover:bg-primary-700 text-white">
+                            Read More
+                          </Button>
+                        </Link>
+                      </CardFooter>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Search className="w-8 h-8 text-primary-600" />
+                  </div>
+                  <h3 className="text-xl font-bold text-primary-900 mb-2">No Articles Found</h3>
+                  <p className="text-primary-800">
+                    We couldn&apos;t find any articles matching your search. Try different keywords or browse categories.
+                  </p>
+                  <Button
+                    className="mt-4 bg-primary-600 hover:bg-primary-700 text-white"
+                    onClick={() => {
+                      setSearchQuery("")
+                      setSelectedCategory("all")
+                    }}
+                  >
+                    Clear Filters
+                  </Button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter Section */}
+      {/* <section className="relative z-10 py-16 px-4 bg-gradient-to-r from-primary-100/50 to-secondary-100/50">
+        <div className="container mx-auto">
+          <div className="max-w-4xl mx-auto bg-white/90 backdrop-blur-sm border border-primary-200 rounded-xl p-8 shadow-xl">
+            <div className="text-center mb-6">
+              <div className="flex justify-center mb-4">
+                <div className="relative">
+                  <Mail className="w-12 h-12 text-primary-600" />
+                  <Sparkles className="w-5 h-5 text-primary-500 absolute -top-2 -right-2" />
                 </div>
               </div>
-            </aside>
+              <h2 className="text-3xl font-bold text-primary-900 mb-2">Subscribe to Our Newsletter</h2>
+              <p className="text-primary-800 max-w-2xl mx-auto">
+                Stay updated with our latest articles, spiritual insights, and exclusive content delivered directly to
+                your inbox.
+              </p>
+            </div>
+            <div className="flex flex-col md:flex-row gap-3 max-w-2xl mx-auto">
+              <input
+                type="email"
+                placeholder="Your email address"
+                className="flex-1 px-4 py-3 border border-primary-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300"
+              />
+              <Button className="bg-primary-600 hover:bg-primary-700 text-white px-6">Subscribe</Button>
+            </div>
+            <p className="text-center text-primary-700 text-sm mt-4">We respect your privacy. Unsubscribe at any time.</p>
           </div>
-        )}
-      </div>
+        </div>
+      </section> */}
+
+    
     </div>
   )
 }

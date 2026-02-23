@@ -9,12 +9,7 @@ export function Footer() {
     { name: "Home", href: "/h" },
     { name: "About", href: "/h/about" },
     { name: "Services", href: "/h/services" },
-    { name: "Retreats Nepal", href: "/h/retreats" },
-    { name: "Nishruti Course", href: "/h/nishruti-meditation" },
-    { name: "Free Resources", href: "/h/resources" },
-    { name: "Meditation Tools", href: "/h/meditation" },
-    { name: "Vedic Tools", href: "/h/tools" },
-    { name: "Blog & Wisdom", href: "/h/blogs" },
+    { name: "Blog", href: "/h/blogs" },
     { name: "Gallery", href: "/h/gallery" },
     { name: "Contact", href: "/h/contact" },
   ]

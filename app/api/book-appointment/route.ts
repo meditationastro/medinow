@@ -73,9 +73,12 @@ const extraDetails = [
   dateOfBirth ? `Date of Birth: ${dateOfBirth}` : null,
   timeOfBirth ? `Time of Birth: ${timeOfBirth}` : null,
   placeOfBirth ? `Place of Birth: ${placeOfBirth}` : null,
-].filter(Boolean).join("\n")
+].filter(Boolean).join("
+")
 
-const combinedMessage = [message, extraDetails].filter(Boolean).join("\n\n")
+const combinedMessage = [message, extraDetails].filter(Boolean).join("
+
+")
 
 await sendBookingEmail({
   fullName: name,
