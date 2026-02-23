@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Answerforself — Spiritual Guidance & Astrological Insights (Kathmandu + Online)</title>
+  <meta name="description" content="Answerforself integrates Vedic Astrology (Jyotish), Meditation, Yoga, and Spiritual Guidance rooted in Himalayan wisdom. Book via WhatsApp +977 9841647283 or email meditationastro1@gmail.com." />
+  <meta name="theme-color" content="#0b1220" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Answerforself — Awakening the Soul" />
+  <meta property="og:description" content="Integrating Vedic Astrology, Meditation, and Yoga for a fulfilling life. Kathmandu + Online worldwide. WhatsApp +977 9841647283." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://answerforself.com/" />
+
+  <!-- Basic SEO -->
+  <link rel="canonical" href="https://answerforself.com/" />
+
+  <style>
+    :root{
+      --bg:#070b14;
+      --bg2:#0b1220;
+      --card: rgba(14, 24, 45, .72);
+      --text:#eaf1ff;
+      --muted:#b9c6e2;
+      --accent:#7aa8ff;
+      --accent2:#66f2c2;
+      --border: rgba(255,255,255,.12);
+      --shadow: 0 16px 45px rgba(0,0,0,.45);
+      --radius: 18px;
+      --max: 1120px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(122,168,255,.28), transparent 55%),
+        radial-gradient(900px 520px at 90% 8%, rgba(102,242,194,.20), transparent 55%),
+        radial-gradient(950px 750px at 50% 110%, rgba(122,168,255,.12), transparent 55%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      line-height:1.6;
+    }
+    a{color:inherit}
+    .wrap{max-width:var(--max); margin:0 auto; padding:22px 18px 120px;}
+    /* Header / Nav */
+    header{
+      display:flex; align-items:center; justify-content:space-between; gap:14px;
+      padding:14px 0;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px; text-decoration:none;
+      min-width: 220px;
+    }
+    .logo{
+      width:44px; height:44px; border-radius:14px;
+      background: linear-gradient(135deg, rgba(122,168,255,.95), rgba(102,242,194,.9));
+      box-shadow: var(--shadow);
+    }
+    .brand b{font-size:18px; letter-spacing:.2px}
+    .brand span{font-size:12px; color:rgba(234,241,255,.75)}
+    nav{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
+    .navlink{
+      text-decoration:none;
+      font-size:13px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+    }
+    .navlink:hover{background: rgba(255,255,255,.08)}
+    /* Components */
+    .card{
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+    .hero{
+      display:grid;
+      grid-template-columns: 1.35fr .65fr;
+      gap:16px;
+      align-items:stretch;
+      margin-top: 8px;
+    }
+    .hero-left{padding:26px 24px}
+    h1{
+      margin:0 0 10px;
+      font-size:42px;
+      line-height:1.08;
+      letter-spacing:-.7px;
+    }
+    .lead{
+      margin:0 0 18px;
+      color: rgba(234,241,255,.82);
+      max-width: 72ch;
+      font-size:16px;
+    }
+    .pillrow{display:flex; gap:10px; flex-wrap:wrap; margin: 10px 0 18px;}
+    .pill{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.04);
+      border-radius:999px;
+      padding:7px 10px;
+      font-size:13px;
+      color: rgba(234,241,255,.82);
+    }
+    .cta-row{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:10px;
+      border-radius: 14px;
+      padding:12px 14px;
+      font-weight:700;
+      text-decoration:none;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      transition: transform .08s ease, background .15s ease, filter .15s ease;
+      min-width: 170px;
+    }
+    .btn:hover{background: rgba(255,255,255,.10)}
+    .btn:active{transform: translateY(1px)}
+    .btn.primary{
+      border:0;
+      background: linear-gradient(135deg, rgba(122,168,255,.95), rgba(102,242,194,.92));
+      color:#06101f;
+    }
+    .btn.primary:hover{filter: brightness(1.03)}
+    .hero-right{padding:18px}
+    .mini{padding:16px; margin-bottom:12px}
+    .mini h3{margin:0 0 6px; font-size:16px}
+    .mini p{margin:0; color:var(--muted); font-size:14px}
+    .line{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      border:1px solid var(--border);
+      border-radius: 14px;
+      padding:12px;
+      background: rgba(255,255,255,.03);
+      margin:10px 0;
+      overflow:hidden;
+    }
+    .k{color:var(--muted); font-size:12px}
+    .v{font-weight:800; font-size:14px; text-decoration:none; white-space:nowrap}
+    /* Sections */
+    .section{margin-top:16px; padding:22px}
+    .section h2{margin:0 0 10px; font-size:22px; letter-spacing:-.2px}
+    .section p{margin:0; color:var(--muted); font-size:14px; max-width: 92ch}
+    .grid3{display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin-top:14px}
+    .svc{padding:16px; border-radius: var(--radius); border:1px solid var(--border); background: rgba(255,255,255,.03); display:flex; flex-direction:column; gap:8px; min-height: 176px}
+    .svc b{font-size:16px}
+    .svc p{margin:0; color:var(--muted); font-size:14px}
+    .tag{margin-top:auto; display:inline-flex; width:fit-content; padding:6px 10px; border-radius:999px; font-size:12px; font-weight:800; border:1px solid rgba(102,242,194,.28); background: rgba(102,242,194,.12); color: rgba(102,242,194,.95)}
+    .split{display:grid; grid-template-columns: 1.2fr .8fr; gap:12px; margin-top:14px}
+    .box{padding:16px; border-radius: var(--radius); border:1px solid var(--border); background: rgba(255,255,255,.03)}
+    .box h3{margin:0 0 8px; font-size:16px}
+    .list{margin:0; padding-left:18px; color:var(--muted); font-size:14px}
+    .testis{display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin-top:14px}
+    .quote{padding:16px; border-radius: var(--radius); border:1px solid var(--border); background: rgba(255,255,255,.03); color: var(--muted); font-size:14px}
+    .quote b{color:var(--text)}
+    /* Form */
+    form{margin-top:12px}
+    .fields{display:grid; grid-template-columns: 1fr 1fr; gap:10px}
+    label{display:flex; flex-direction:column; gap:6px; color: rgba(234,241,255,.85); font-size:13px}
+    input, select, textarea{
+      border-radius: 14px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      padding:12px 12px;
+      color: var(--text);
+      outline:none;
+      font-size:14px;
+    }
+    textarea{min-height:120px; resize:vertical}
+    input::placeholder, textarea::placeholder{color: rgba(234,241,255,.45)}
+    .form-actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
+    .small{font-size:12px; color: rgba(234,241,255,.65); margin-top:10px}
+    .notice{
+      margin-top:14px;
+      color: rgba(234,241,255,.70);
+      font-size:12px;
+      border-top: 1px solid var(--border);
+      padding-top: 14px;
+    }
+    footer{
+      margin-top:18px;
+      color: rgba(234,241,255,.60);
+      font-size:12px;
+      text-align:center;
+      padding: 18px 0 0;
+    }
+    /* Sticky CTA */
+    .sticky{
+      position: fixed; left: 0; right: 0; bottom: 0;
+      background: rgba(7,11,20,.82);
+      border-top: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+      padding: 10px 12px;
+      z-index: 100;
+    }
+    .sticky .inner{
+      max-width: var(--max);
+      margin: 0 auto;
+      display:flex;
+      gap:10px;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .sticky .txt{display:flex; flex-direction:column; gap:2px; min-width: 240px}
+    .sticky .txt b{font-size:13px}
+    .sticky .txt span{font-size:12px; color: rgba(234,241,255,.70)}
+    .sticky .actions{display:flex; gap:10px; flex-wrap:wrap}
+    .sticky .btn{min-width: 150px; padding:10px 12px; border-radius: 12px}
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero{grid-template-columns: 1fr}
+      h1{font-size:36px}
+      .grid3{grid-template-columns: 1fr}
+      .split{grid-template-columns: 1fr}
+      .testis{grid-template-columns: 1fr}
+      .fields{grid-template-columns: 1fr}
+      header{flex-direction:column; align-items:flex-start}
+      nav{justify-content:flex-start}
+    }
+  </style>
+
+  <!-- LocalBusiness schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Answerforself",
+    "url": "https://answerforself.com/",
+    "email": "meditationastro1@gmail.com",
+    "telephone": "+9779841647283",
+    "address": { "@type": "PostalAddress", "addressLocality": "Kathmandu", "addressCountry": "NP" },
+    "areaServed": ["NP", "Worldwide"],
+    "description": "Spiritual guidance and astrological insights integrating Vedic Astrology (Jyotish), Meditation, and Yoga rooted in Himalayan wisdom."
+  }
+  </script>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <a class="brand" href="#top" aria-label="Answerforself Home">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <b>Answerforself</b><br/>
+          <span>Spiritual Guidance • Astrological Insights • Kathmandu + Online</span>
+        </div>
+      </a>
+      <nav aria-label="Site navigation">
+        <a class="navlink" href="#services">Services</a>
+        <a class="navlink" href="#offerings">Offerings</a>
+        <a class="navlink" href="#testimonials">Reviews</a>
+        <a class="navlink" href="#contact">Contact</a>
+        <a class="navlink" href="#book">Appointment</a>
+      </nav>
+    </header>
+
+    <main id="top" class="hero">
+      <section class="card hero-left">
+        <h1>Awakening the Soul</h1>
+        <p class="lead">
+          Integrating <b>Vedic Astrology</b>, <b>Meditation</b>, and <b>Yoga</b> for a fulfilling life.
+          Transform your life through authentic Himalayan wisdom with personalized consultations and spiritual guidance
+          from Nepal’s sacred traditions.
+        </p>
+
+        <div class="pillrow">
+          <span class="pill">✅ Online worldwide</span>
+          <span class="pill">✅ Kathmandu (Boudhanath)</span>
+          <span class="pill">✅ Personal guidance</span>
+          <span class="pill">✅ Jyotish • Meditation • Yoga</span>
+        </div>
+
+        <div class="cta-row">
+          <a class="btn primary" href="https://wa.me/9779841647283?text=Hello%20I%20want%20to%20book%20a%20consultation%20at%20Answerforself.%20Please%20share%20available%20slots%20and%20fees." target="_blank" rel="noopener">💬 Book on WhatsApp</a>
+          <a class="btn" href="tel:+9779841647283">📞 Call Now</a>
+          <a class="btn" href="mailto:meditationastro1@gmail.com">✉️ Email Us</a>
+        </div>
+
+        <div class="box" style="margin-top:16px;">
+          <h3 style="margin:0 0 6px;">Allow Your Soul to Begin Anew</h3>
+          <p style="margin:0; color:var(--muted); font-size:14px;">
+            Allow your body, mind, and soul to begin a new, balanced, and wonderful life.
+            The mind’s strategies may bring small, temporary successes — but at the end of the tunnel,
+            what we truly seek is <b>ascension</b>: a higher awakening beyond both struggle and strategy.
+          </p>
+        </div>
+      </section>
+
+      <aside class="card hero-right">
+        <div class="card mini">
+          <h3>Quick Booking</h3>
+          <p>WhatsApp is the fastest way to confirm available slots, fees, and online/in-person options.</p>
+        </div>
+
+        <div class="card" style="padding:16px;">
+          <div class="line">
+            <div>
+              <div class="k">WhatsApp / Call</div>
+              <a class="v" href="tel:+9779841647283">+977 9841647283</a>
+            </div>
+            <a class="btn primary" style="min-width:auto; padding:10px 12px;" href="https://wa.me/9779841647283?text=Hello%20I%20want%20to%20book%20a%20consultation%20at%20Answerforself.%20Please%20share%20available%20slots%20and%20fees." target="_blank" rel="noopener">💬</a>
+          </div>
+
+          <div class="line">
+            <div>
+              <div class="k">Email</div>
+              <a class="v" href="mailto:meditationastro1@gmail.com">meditationastro1@gmail.com</a>
+            </div>
+            <a class="btn" style="min-width:auto; padding:10px 12px;" href="mailto:meditationastro1@gmail.com">✉️</a>
+          </div>
+
+          <div class="line">
+            <div>
+              <div class="k">Location</div>
+              <div class="v" style="white-space:normal;">Kathmandu, Nepal (Online available worldwide)</div>
+            </div>
+          </div>
+
+          <div class="small">
+            Working Hours (NPT): Sunday–Friday 9:00 AM – 8:00 PM • Saturday by appointment
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <section id="services" class="card section">
+      <h2>Our Services</h2>
+      <p>
+        Meet and try our services to help you fully change your body, soul, and spirit. Each offering supports clarity,
+        purpose, and spiritual growth — grounded in traditional wisdom and practical guidance.
+      </p>
+
+      <div class="grid3">
+        <div class="svc">
+          <b>Spiritual Guidance</b>
+          <p>Release mental conditioning, recover your essence, and embrace the purpose with which you were born.</p>
+          <span class="tag">Personal direction</span>
+        </div>
+        <div class="svc">
+          <b>Vedic Astrology (Jyotish) Consultation</b>
+          <p>Explore direction, purpose, health, family, wealth, marriage, education, and spirituality through your birth chart.</p>
+          <span class="tag">Life-path insight</span>
+        </div>
+        <div class="svc">
+          <b>Meditation & Yoga Session</b>
+          <p>Start the practice toward liberation (Moksha): calm the mind, build discipline, and realize who you truly are.</p>
+          <span class="tag">Calm & awareness</span>
+        </div>
+      </div>
+
+      <div class="cta-row" style="margin-top:16px;">
+        <a class="btn primary" href="https://wa.me/9779841647283?text=Hello%20Please%20recommend%20the%20best%20service%20for%20my%20current%20situation%20and%20share%20available%20slots%20and%20fees." target="_blank" rel="noopener">💬 Ask Which Service Fits Me</a>
+        <a class="btn" href="#book">📅 Book an Appointment</a>
+      </div>
+    </section>
+
+    <section id="offerings" class="card section">
+      <h2>Core Offerings</h2>
+      <p>
+        These are the most requested experiences at Answerforself. If you’re unsure where to start, choose the first option
+        (Personal Guidance) — we’ll recommend your best next step.
+      </p>
+
+      <div class="split">
+        <div class="box">
+          <h3>Astrological Chart Reading</h3>
+          <p style="margin:0; color:var(--muted); font-size:14px;">
+            Understand cosmic influences, personality patterns, and repetitive life cycles — and receive a practical path forward.
+          </p>
+          <ul class="list">
+            <li>Birth chart insights (career, relationships, purpose)</li>
+            <li>Timing & cycles (when to act / when to heal)</li>
+            <li>Supportive remedies & daily practices</li>
+          </ul>
+          <div class="cta-row" style="margin-top:10px;">
+            <a class="btn primary" href="https://wa.me/9779841647283?text=Hello%20I%20want%20to%20book%20an%20Astrological%20Chart%20Reading.%20Please%20share%20available%20slots%20and%20fees." target="_blank" rel="noopener">Book Chart Reading</a>
+          </div>
+        </div>
+
+        <div class="box">
+          <h3>Meditation & Spiritual Practice</h3>
+          <p style="margin:0; color:var(--muted); font-size:14px;">
+            Build a simple daily practice you can actually follow — for focus, peace, and inner stability.
+          </p>
+          <ul class="list">
+            <li>Guided meditation + breathwork</li>
+            <li>Mantra / mindfulness tools</li>
+            <li>Personal practice plan</li>
+          </ul>
+          <div class="cta-row" style="margin-top:10px;">
+            <a class="btn primary" href="https://wa.me/9779841647283?text=Hello%20I%20want%20to%20join%20a%20Meditation%20%26%20Yoga%20Session.%20Please%20share%20available%20slots%20and%20fees." target="_blank" rel="noopener">Join Meditation Session</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="testimonials" class="card section">
+      <h2>What People Feel After Sessions</h2>
+      <p>Use these as placeholders, then replace with your real reviews. Short, emotional testimonials convert best.</p>
+
+      <div class="testis">
+        <div class="quote">
+          <b>“I finally felt clarity.”</b><br/>
+          The guidance helped me understand my patterns and make a peaceful decision.
+        </div>
+        <div class="quote">
+          <b>“Very grounded and authentic.”</b><br/>
+          Not commercial. Not rushed. The practices were simple and powerful.
+        </div>
+        <div class="quote">
+          <b>“I felt aligned again.”</b><br/>
+          The chart reading gave direction — and the meditation gave calm.
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="card section">
+      <h2>Get In Touch</h2>
+      <p>
+        Ready to begin your spiritual journey? Send a message and let’s connect for a transformative experience.
+        WhatsApp is fastest — email is also welcome.
+      </p>
+
+      <div class="split">
+        <div class="box">
+          <h3>Contact Details</h3>
+          <div class="line">
+            <div>
+              <div class="k">WhatsApp</div>
+              <a class="v" href="https://wa.me/9779841647283" target="_blank" rel="noopener">+977 9841647283</a>
+            </div>
+          </div>
+          <div class="line">
+            <div>
+              <div class="k">Email</div>
+              <a class="v" href="mailto:meditationastro1@gmail.com">meditationastro1@gmail.com</a>
+            </div>
+          </div>
+          <div class="line">
+            <div>
+              <div class="k">Location</div>
+              <div class="v" style="white-space:normal;">Kathmandu, Nepal (Online worldwide)</div>
+            </div>
+          </div>
+          <div class="small">Tip: If you message on WhatsApp, include your preferred time (NPT) and which service you want.</div>
+        </div>
+
+        <div class="box">
+          <h3>Send a Message</h3>
+
+          <!-- NOTE: This is a front-end form template. Connect it to your backend or form service to receive submissions. -->
+          <form onsubmit="return handleSubmit(event)">
+            <div class="fields">
+              <label>
+                Full Name
+                <input name="name" required placeholder="Your name" />
+              </label>
+              <label>
+                Email
+                <input name="email" type="email" required placeholder="you@example.com" />
+              </label>
+              <label>
+                Phone (Optional)
+                <input name="phone" placeholder="+977 ..." />
+              </label>
+              <label>
+                Service Interest
+                <select name="service" required>
+                  <option value="" selected disabled>Select a service</option>
+                  <option>Vedic Astrology Consultation</option>
+                  <option>Meditation & Yoga Session</option>
+                  <option>Spiritual Guidance</option>
+                  <option>Astrological Chart Reading</option>
+                  <option>General Inquiry</option>
+                </select>
+              </label>
+            </div>
+
+            <label style="margin-top:10px;">
+              Message
+              <textarea name="message" required placeholder="Share your situation briefly and what you’re seeking..."></textarea>
+            </label>
+
+            <div class="form-actions">
+              <button class="btn primary" type="submit">Send Message</button>
+              <a class="btn" href="https://wa.me/9779841647283?text=Hello%20I%20want%20to%20connect%20with%20Answerforself.%20Here%20is%20my%20message%3A%20" target="_blank" rel="noopener">💬 Send via WhatsApp Instead</a>
+            </div>
+
+            <div id="formNote" class="small" aria-live="polite"></div>
+          </form>
+        </div>
+      </div>
+
+      <div class="notice">
+        <b>Important:</b> Our services are spiritual and wellness-focused and are not a substitute for medical, psychological, or legal care.
+        If you have an urgent concern, please consult a qualified professional.
+      </div>
+    </section>
+
+    <section id="book" class="card section">
+      <h2>Appointment</h2>
+      <p>Choose your preferred method. WhatsApp is the fastest way to confirm slots & fees.</p>
+
+      <div class="cta-row" style="margin-top:14px;">
+        <a class="btn primary" href="https://wa.me/9779841647283?text=Hello%20I%20want%20to%20book%20a%20consultation%20at%20Answerforself.%20Please%20share%20available%20slots%20and%20fees." target="_blank" rel="noopener">💬 WhatsApp Booking</a>
+        <a class="btn" href="tel:+9779841647283">📞 Call +977 9841647283</a>
+        <a class="btn" href="mailto:meditationastro1@gmail.com?subject=Appointment%20Request%20-%20Answerforself&body=Hello%2C%20I%20want%20to%20book%20a%20session%20at%20Answerforself.%20Please%20share%20available%20slots%20and%20fees.%0A%0AName%3A%0ALocation%3A%0AService%3A%0APreferred%20Time%20(NPT)%3A%0AMessage%3A">✉️ Email Appointment</a>
+      </div>
+
+      <footer>
+        © <span id="y"></span> Answerforself. All rights reserved.
+      </footer>
+    </section>
+  </div>
+
+  <!-- Sticky CTA bar -->
+  <div class="sticky" role="region" aria-label="Sticky call to action">
+    <div class="inner">
+      <div class="txt">
+        <b>Ready to begin your spiritual journey?</b>
+        <span>WhatsApp is the fastest way to confirm slots & fees.</span>
+      </div>
+      <div class="actions">
+        <a class="btn primary" href="https://wa.me/9779841647283?text=Hello%20I%20want%20to%20book%20a%20consultation%20at%20Answerforself.%20Please%20share%20available%20slots%20and%20fees." target="_blank" rel="noopener">💬 WhatsApp</a>
+        <a class="btn" href="tel:+9779841647283">📞 Call</a>
+        <a class="btn" href="mailto:meditationastro1@gmail.com">✉️ Email</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Front-end only: opens user's email client with the form contents.
+    function handleSubmit(e){
+      e.preventDefault();
+      const form = e.target;
+      const data = new FormData(form);
+      const name = data.get('name');
+      const email = data.get('email');
+      const phone = data.get('phone');
+      const service = data.get('service');
+      const message = data.get('message');
+
+      const subject = encodeURIComponent('New Inquiry — Answerforself');
+      const body = encodeURIComponent(
+        `Name: ${name}\nEmail: ${email}\nPhone: ${phone || ''}\nService: ${service}\n\nMessage:\n${message}\n`
+      );
+
+      // You can replace this with your real backend endpoint later.
+      window.location.href = `mailto:meditationastro1@gmail.com?subject=${subject}&body=${body}`;
+
+      const note = document.getElementById('formNote');
+      note.textContent = "Opening your email app to send this message… (For website form submissions, connect this form to a backend or form service.)";
+      return false;
+    }
+  </script>
+</body>
+</html>
