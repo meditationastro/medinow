@@ -1,191 +1,297 @@
 "use client"
 import Link from "next/link"
-import { Menu } from "lucide-react"
+import { Menu, X, ChevronDown, Sun, Moon, Star, BookOpen, Music, Download, Wrench, Home, Phone, Users, ShoppingBag, Image, Sparkles, LogIn, User, Shield, LogOut } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { useState } from "react"
-import { navigationLinks, services } from "@/constants/navigation"
+import { useState, useRef, useEffect } from "react"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
+import { useSession, signOut } from "next-auth/react"
 import {
-  Select,
-  SelectTrigger,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/select"
-import {
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionContent,
+  Accordion, AccordionItem, AccordionTrigger, AccordionContent,
 } from "@/components/ui/accordion"
+import {
+  DropdownMenu as ShadDropdown,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
-export function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const pathname = usePathname()
+const NAV = [
+  { label: "Home", href: "/h", icon: Home },
+  {
+    label: "Services", icon: Star,
+    children: [
+      { label: "All Services", href: "/h/services", icon: "✨", desc: "Overview of all our offerings" },
+      { label: "Vedic Astrology Counseling", href: "/h/astrological-chart-reading", icon: "🔮", desc: "Natal chart, karma mapping, guidance" },
+      { label: "Jyotish Consultancy", href: "/h/jyotish-consultancy", icon: "⭐", desc: "Classical Vedic astrology readings" },
+      { label: "Meditation & Yoga", href: "/h/meditation-and-yoga", icon: "🧘", desc: "Nishruti, breathwork, Tibetan bowls" },
+      { label: "Chakra Balancing", href: "/h/chakra-balancing", icon: "🌀", desc: "Energy healing & chakra alignment" },
+      { label: "Sound Healing", href: "/h/sound-healing", icon: "🔊", desc: "Tibetan bowls & mantra therapy" },
+      { label: "Spiritual Guidance", href: "/h/spiritual-guidance", icon: "🕊️", desc: "Life coaching & soul alignment" },
+    ]
+  },
+  {
+    label: "Retreats", icon: Sparkles,
+    children: [
+      { label: "Nepal Retreat Overview", href: "/h/retreats", icon: "🏔️", desc: "Sacred Himalayan immersions" },
+      { label: "Upcoming Dates & Booking", href: "/h/appointment", icon: "📅", desc: "Reserve your retreat spot" },
+      { label: "Kathmandu Valley", href: "/h/retreats#kathmandu", icon: "🛕", desc: "Temples, rituals, ancient wisdom" },
+      { label: "Pokhara & Lumbini", href: "/h/retreats#pokhara", icon: "🌊", desc: "Lakes, forests, Buddha's birthplace" },
+      { label: "Packages & Pricing", href: "/h/services#packages", icon: "💎", desc: "Starter, Inner Alchemy, Full Immersion" },
+    ]
+  },
+  {
+    label: "Learn", icon: BookOpen,
+    children: [
+      { label: "Nishruti Meditation Course", href: "/h/nishruti-meditation", icon: "🎧", desc: "Transcending the planes of hearing" },
+      { label: "Mantra Practice", href: "/h/tools/mantra", icon: "🕉️", desc: "Interactive mantra timer & guide" },
+      { label: "Blog & Wisdom", href: "/h/blogs", icon: "📝", desc: "Articles on astrology & meditation" },
+      { label: "Resources & Downloads", href: "/h/resources", icon: "📥", desc: "Free PDFs, guided audio, tools" },
+      { label: "Dosha Quiz", href: "/h/dosha", icon: "🌿", desc: "Find your Ayurvedic constitution" },
+      { label: "FAQ", href: "/h/faq", icon: "❓", desc: "Common questions answered" },
+    ]
+  },
+  {
+    label: "Tools", icon: Wrench,
+    children: [
+      { label: "All Vedic Tools", href: "/h/tools", icon: "🔧", desc: "All astrology & meditation tools" },
+      { label: "Birth Chart Calculator", href: "/h/tools/birth-chart", icon: "🌟", desc: "Your Vedic birth chart" },
+      { label: "Nakshatra & Numerology", href: "/h/tools/numerology", icon: "🔢", desc: "Vedic numerology reading" },
+      { label: "Gemstone Guidance", href: "/h/tools/gemstone", icon: "💎", desc: "Educational gemstone tool" },
+      { label: "Muhurta Planner", href: "/h/tools/muhurta", icon: "📅", desc: "Auspicious timing guide" },
+      { label: "Breathing Meditation", href: "/h/meditation", icon: "🧘", desc: "Interactive breathing & timer" },
+    ]
+  },
+  { label: "Gallery", href: "/h/gallery", icon: Image },
+  { label: "Shop", href: "/h/shop", icon: ShoppingBag },
+  { label: "About", href: "/h/about", icon: Users },
+  { label: "Contact", href: "/h/contact", icon: Phone },
+]
 
-  const handleLinkClick = () => {
-    setIsMenuOpen(false)
-  }
+function NavDropdownItem({ item, onClose }: { item: typeof NAV[0]; onClose: () => void }) {
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
 
-  const isActiveRoute = (href: string) => {
-    if (href === '/') {
-      return pathname === '/'
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
     }
-    return pathname === href
+    document.addEventListener("mousedown", handleClick)
+    return () => document.removeEventListener("mousedown", handleClick)
+  }, [])
+
+  if (!("children" in item)) {
+    return (
+      <Link href={item.href!} className="text-primary-800 hover:text-amber-600 font-medium text-sm transition-colors py-2 px-1">
+        {item.label}
+      </Link>
+    )
   }
 
   return (
-    <header className="relative z-50 bg-gradient-to-b from-primary-50 to-primary-100/80 border-b border-primary-300 sticky top-0 shadow-sm backdrop-blur-sm">
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center justify-between">
-          <Link 
-            href="/" 
-            className={cn(
-              "text-2xl font-bold text-primary-700 hover:text-primary-900 transition-colors",
-              isActiveRoute('/') && "underline decoration-primary-600 underline-offset-8"
-            )}
-          >
-            Answerforself
-          </Link>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-8">
-            {navigationLinks.filter(link => link.label !== "Services").map((link) => (
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="flex items-center gap-1 text-primary-800 hover:text-amber-600 font-medium text-sm transition-colors py-2 px-1"
+      >
+        {item.label}
+        <ChevronDown className={cn("w-3.5 h-3.5 transition-transform duration-200", open && "rotate-180")} />
+      </button>
+      {open && (
+        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-72 bg-white rounded-2xl shadow-2xl border border-gray-100 p-2 z-50">
+          <div className="grid gap-0.5">
+            {item.children!.map((child) => (
               <Link
-                key={link.href}
-                href={link.href}
-                className={cn(
-                  "text-primary-700 hover:text-primary-900 transition-colors font-medium relative py-2",
-                  isActiveRoute(link.href) && "underline decoration-primary-600 underline-offset-8"
-                )}
+                key={child.href}
+                href={child.href}
+                onClick={() => setOpen(false)}
+                className="flex items-start gap-3 p-3 rounded-xl hover:bg-amber-50 transition-colors group"
               >
-                {link.label}
+                <span className="text-xl leading-none mt-0.5">{child.icon}</span>
+                <div>
+                  <div className="font-semibold text-primary-900 text-sm group-hover:text-amber-700">{child.label}</div>
+                  <div className="text-xs text-gray-500 mt-0.5">{child.desc}</div>
+                </div>
               </Link>
             ))}
-            {/* Services Dropdown */}
-            <Select onValueChange={val => { if (val) window.location.href = val }}>
-              <SelectTrigger className="w-auto min-w-[120px] text-primary-700 font-medium  border-0  hover:text-primary-900  focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200">
-                Services
-              </SelectTrigger>
-              <SelectContent className="bg-white border-primary-200 shadow-lg">
-                <SelectItem value="/h/astrological-chart-reading" className="text-primary-800 hover:bg-primary-50 focus:bg-primary-50 cursor-pointer">
-                  Astrological Chart Reading
-                </SelectItem>
-                <SelectItem value="/h/meditation-and-yoga" className="text-primary-800 hover:bg-primary-50 focus:bg-primary-50 cursor-pointer">
-                  Meditation And Yoga
-                </SelectItem>
-                <SelectItem value="/h/spiritual-guidance" className="text-primary-800 hover:bg-primary-50 focus:bg-primary-50 cursor-pointer">
-                  Spiritual Guidance
-                </SelectItem>
-                <SelectItem value="/h/jyotish-consultancy" className="text-primary-800 hover:bg-primary-50 focus:bg-primary-50 cursor-pointer">
-                  Jyotish Consultancy
-                </SelectItem>
-                <SelectItem value="/h/sound-healing" className="text-primary-800 hover:bg-primary-50 focus:bg-primary-50 cursor-pointer">
-                  Sound Healing
-                </SelectItem>
-                <SelectItem value="/h/chakra-balancing" className="text-primary-800 hover:bg-primary-50 focus:bg-primary-50 cursor-pointer">
-                  Chakra Balancing
-                </SelectItem>
-                <SelectItem value="/h/vedic-remedies" className="text-primary-800 hover:bg-primary-50 focus:bg-primary-50 cursor-pointer">
-                  Vedic Remedies
-                </SelectItem>
-              </SelectContent>
-            </Select>
-            {/* Book Now Button */}
-            <Link href="/h/appointment">
-              <Button className="ml-4  bg-gradient-to-r from-blue-800 to-amber-600 hover:bg-primary-700 text-white">Book Now</Button>
-            </Link>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+export function Header() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { data: session } = useSession()
+  const isAdmin = session?.user?.role === "ADMIN"
+  const isLoggedIn = !!session?.user
+  const userName = session?.user?.name || session?.user?.email?.split("@")[0] || "Account"
+
+  return (
+    <header className="relative z-50 bg-white/96 backdrop-blur-md border-b border-amber-100 sticky top-0 shadow-sm">
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <Link href="/h" className="flex items-center gap-2 flex-shrink-0">
+            <div className="relative">
+              <Sun className="w-8 h-8 text-amber-500" />
+              <Moon className="w-4 h-4 text-blue-700 absolute -top-0.5 -right-0.5" />
+            </div>
+            <div>
+              <span className="text-blue-900 font-bold text-lg leading-none block">MeditationAstro</span>
+              <span className="text-amber-600 text-xs tracking-wide leading-none">Answerforself</span>
+            </div>
+          </Link>
+
+          {/* Desktop Nav */}
+          <nav className="hidden lg:flex items-center gap-0.5">
+            {NAV.map((item) => (
+              <NavDropdownItem key={item.label} item={item} onClose={() => {}} />
+            ))}
           </nav>
 
-          {/* Mobile Menu */}
-          <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
-            <SheetTrigger asChild className="lg:hidden">
-              <Button variant="ghost" size="icon" className="text-primary-700 hover:text-primary-900 hover:bg-primary-100/50">
-                <Menu className="h-6 w-6" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="bg-gradient-to-b from-primary-50 to-primary-100/90 backdrop-blur-sm border-l border-primary-300">
-              <nav className="flex flex-col space-y-4 mt-8 pl-4">
-                {navigationLinks.filter(link => link.label !== "Services").map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    onClick={handleLinkClick}
-                    className={cn(
-                      "text-primary-700 hover:text-primary-900 transition-colors font-medium py-2",
-                      isActiveRoute(link.href) && "underline decoration-primary-600 underline-offset-8"
-                    )}
+          {/* Right Actions */}
+          <div className="flex items-center gap-2">
+            {/* User account menu */}
+            {isLoggedIn ? (
+              <ShadDropdown>
+                <DropdownMenuTrigger asChild>
+                  <Button size="sm" variant="outline" className="hidden sm:flex items-center gap-1.5 border-blue-200 text-blue-800 text-xs h-8">
+                    <User className="w-3.5 h-3.5" />
+                    <span className="max-w-[80px] truncate">{userName}</span>
+                    <ChevronDown className="w-3 h-3" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem asChild>
+                    <Link href="/dashboard" className="flex items-center gap-2">
+                      <User className="w-4 h-4" /> Dashboard
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/dashboard?tab=appointments" className="flex items-center gap-2">
+                      <Star className="w-4 h-4" /> My Bookings
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/dashboard?tab=orders" className="flex items-center gap-2">
+                      <ShoppingBag className="w-4 h-4" /> My Orders
+                    </Link>
+                  </DropdownMenuItem>
+                  {isAdmin && (
+                    <>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem asChild>
+                        <Link href="/admin" className="flex items-center gap-2 text-blue-700 font-semibold">
+                          <Shield className="w-4 h-4" /> Admin Panel
+                        </Link>
+                      </DropdownMenuItem>
+                    </>
+                  )}
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={() => signOut({ callbackUrl: "/h" })}
+                    className="flex items-center gap-2 text-red-600 cursor-pointer"
                   >
-                    {link.label}
-                  </Link>
-                ))}
-                {/* Services Accordion Dropdown */}
-                <Accordion type="single" collapsible className="w-full">
-                  <AccordionItem value="services">
-                    <AccordionTrigger className="text-primary-700 font-medium py-2">Services</AccordionTrigger>
-                    <AccordionContent className="pl-4">
-                      <Link
-                        href="/h/astrological-chart-reading"
-                        onClick={handleLinkClick}
-                        className="block text-primary-700 hover:text-primary-900 py-1"
-                      >
-                        Astrological Chart Reading
+                    <LogOut className="w-4 h-4" /> Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </ShadDropdown>
+            ) : (
+              <Link href="/auth/login">
+                <Button size="sm" variant="outline" className="hidden sm:flex items-center gap-1.5 border-blue-300 text-blue-800 text-xs h-8 hover:bg-blue-50">
+                  <LogIn className="w-3.5 h-3.5" />
+                  Login
+                </Button>
+              </Link>
+            )}
+
+            <Link href="/h/appointment">
+              <Button size="sm" className="bg-amber-500 hover:bg-amber-600 text-black font-semibold text-xs px-3 h-8">
+                Book Now
+              </Button>
+            </Link>
+
+            {/* Mobile Hamburger */}
+            <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="sm" className="lg:hidden p-2">
+                  <Menu className="w-5 h-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-80 p-0 bg-white overflow-y-auto">
+                <div className="flex items-center justify-between p-4 border-b border-gray-100">
+                  <div className="flex items-center gap-2">
+                    <Sun className="w-6 h-6 text-amber-500" />
+                    <span className="font-bold text-blue-900">MeditationAstro</span>
+                  </div>
+                </div>
+                <div className="p-4">
+                  <Accordion type="single" collapsible className="w-full">
+                    {NAV.map((item, i) => (
+                      "children" in item ? (
+                        <AccordionItem key={i} value={`item-${i}`} className="border-b border-gray-100">
+                          <AccordionTrigger className="text-sm font-semibold text-blue-900 py-3 hover:no-underline">
+                            {item.label}
+                          </AccordionTrigger>
+                          <AccordionContent>
+                            <div className="space-y-1 pb-2">
+                              {item.children!.map((child) => (
+                                <Link key={child.href} href={child.href} onClick={() => setIsMenuOpen(false)}
+                                  className="flex items-center gap-2 py-2 px-2 rounded-lg hover:bg-amber-50 text-sm text-gray-700">
+                                  <span>{child.icon}</span> {child.label}
+                                </Link>
+                              ))}
+                            </div>
+                          </AccordionContent>
+                        </AccordionItem>
+                      ) : (
+                        <div key={i} className="border-b border-gray-100">
+                          <Link href={item.href!} onClick={() => setIsMenuOpen(false)}
+                            className="flex items-center gap-2 py-3 text-sm font-semibold text-blue-900 hover:text-amber-600">
+                            {item.label}
+                          </Link>
+                        </div>
+                      )
+                    ))}
+                  </Accordion>
+                  <div className="mt-4 space-y-2">
+                    <Link href="/h/appointment" onClick={() => setIsMenuOpen(false)}>
+                      <Button className="w-full bg-amber-500 hover:bg-amber-600 text-black font-bold">Book Free Discovery Call</Button>
+                    </Link>
+                    {isLoggedIn ? (
+                      <>
+                        <Link href="/dashboard" onClick={() => setIsMenuOpen(false)}>
+                          <Button variant="outline" className="w-full border-blue-300 text-blue-800">My Dashboard</Button>
+                        </Link>
+                        {isAdmin && (
+                          <Link href="/admin" onClick={() => setIsMenuOpen(false)}>
+                            <Button className="w-full bg-blue-800 text-white hover:bg-blue-900">
+                              <Shield className="w-4 h-4 mr-2" /> Admin Panel
+                            </Button>
+                          </Link>
+                        )}
+                        <Button variant="ghost" className="w-full text-red-600" onClick={() => signOut({ callbackUrl: "/h" })}>
+                          <LogOut className="w-4 h-4 mr-2" /> Sign Out
+                        </Button>
+                      </>
+                    ) : (
+                      <Link href="/auth/login" onClick={() => setIsMenuOpen(false)}>
+                        <Button variant="outline" className="w-full border-blue-300 text-blue-800">
+                          <LogIn className="w-4 h-4 mr-2" /> Login / Sign Up
+                        </Button>
                       </Link>
-                      <Link
-                        href="/h/meditation-and-yoga"
-                        onClick={handleLinkClick}
-                        className="block text-primary-700 hover:text-primary-900 py-1"
-                      >
-                        Meditation And Yoga
-                      </Link>
-                      <Link
-                        href="/h/spiritual-guidance"
-                        onClick={handleLinkClick}
-                        className="block text-primary-700 hover:text-primary-900 py-1"
-                      >
-                        Spiritual Guidance
-                      </Link>
-                      <Link
-                        href="/h/jyotish-consultancy"
-                        onClick={handleLinkClick}
-                        className="block text-primary-700 hover:text-primary-900 py-1"
-                      >
-                        Jyotish Consultancy
-                      </Link>
-                      <Link
-                        href="/h/sound-healing"
-                        onClick={handleLinkClick}
-                        className="block text-primary-700 hover:text-primary-900 py-1"
-                      >
-                        Sound Healing
-                      </Link>
-                      <Link
-                        href="/h/chakra-balancing"
-                        onClick={handleLinkClick}
-                        className="block text-primary-700 hover:text-primary-900 py-1"
-                      >
-                        Chakra Balancing
-                      </Link>
-                      <Link
-                        href="/h/vedic-remedies"
-                        onClick={handleLinkClick}
-                        className="block text-primary-700 hover:text-primary-900 py-1"
-                      >
-                        Vedic Remedies
-                      </Link>
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-                {/* Book Now Button */}
-                <Link href="/h/appointment" onClick={handleLinkClick}>
-                  <Button className="mt-4 bg-primary-600 hover:bg-primary-700 text-white w-full">Book Now</Button>
-                </Link>
-              </nav>
-            </SheetContent>
-          </Sheet>
+                    )}
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
       </div>
     </header>
   )
-} 
+}
