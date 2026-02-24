@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { auth } from "@/auth"
 import { db } from "@/lib/db"
+const prisma = db as any
 
 export async function GET() {
   try {
@@ -8,7 +9,7 @@ export async function GET() {
 
     // If user is admin, return all posts with visibility status
     if (session?.user?.role === "ADMIN") {
-      const blogs = await db.post.findMany({
+      const blogs = await prisma.post.findMany({
         select: {
           id: true,
           title: true,
@@ -23,7 +24,7 @@ export async function GET() {
     }
 
     // For non-admin users, only return public posts
-    const blogs = await db.post.findMany({
+    const blogs = await prisma.post.findMany({
       where: {
         published: true,
       },

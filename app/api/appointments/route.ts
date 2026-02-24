@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { db } from "@/lib/db"
+const prisma = db as any
 import { auth } from "@/auth"
 
 export async function GET() {
@@ -19,7 +20,7 @@ export async function GET() {
         ? undefined
         : { email: session.user.email as string }
 
-    const appointments = await db.appointment.findMany({
+    const appointments = await prisma.appointment.findMany({
       where,
       orderBy: { createdAt: "desc" },
     })

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { sendBookingEmail } from "@/lib/mail"
 import { db } from "@/lib/db"
+const prisma = db as any
 
 // Make the route public
 export const dynamic = "force-dynamic"
@@ -53,7 +54,7 @@ export async function POST(req: Request) {
     }
 
     // Store appointment in database
-    const appointment = await db.appointment.create({
+    const appointment = await prisma.appointment.create({
       data: {
         name,
         email,

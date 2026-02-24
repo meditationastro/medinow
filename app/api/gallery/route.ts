@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
-import { db } from "@/lib/db";
+import { db } from "@/lib/db"
+const prisma = db as any;
 
 export async function POST(req: Request) {
   try {
@@ -17,7 +18,7 @@ export async function POST(req: Request) {
       return new NextResponse("Missing required fields", { status: 400 });
     }
 
-    const galleryImage = await db.galleryImage.create({
+    const galleryImage = await prisma.galleryImage.create({
       data: {
         title,
         imageUrl,
@@ -34,7 +35,7 @@ export async function POST(req: Request) {
 
 export async function GET() {
   try {
-    const galleryImages = await db.galleryImage.findMany({
+    const galleryImages = await prisma.galleryImage.findMany({
       orderBy: {
         createdAt: "desc",
       },

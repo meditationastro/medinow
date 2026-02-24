@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { db } from "@/lib/db"
+const prisma = db as any
 import { auth } from "@/auth"
 
 export async function PATCH(
@@ -19,7 +20,7 @@ export async function PATCH(
       return new NextResponse("Missing required fields", { status: 400 })
     }
 
-    const updated = await db.galleryImage.update({
+    const updated = await prisma.galleryImage.update({
       where: { id },
       data: { title, imageUrl },
     })
@@ -41,7 +42,7 @@ export async function DELETE(
     if (session.user.role !== "ADMIN") return new NextResponse("Forbidden", { status: 403 })
 
     const { id } = await params
-    await db.galleryImage.delete({ where: { id } })
+    await prisma.galleryImage.delete({ where: { id } })
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error("[GALLERY_DELETE]", error)

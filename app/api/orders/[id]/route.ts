@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { db } from "@/lib/db"
+const prisma = db as any
 import { auth } from "@/auth"
 
 export async function GET(
@@ -11,7 +12,7 @@ export async function GET(
     if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
     const { id } = await params
-    const order = await db.order.findUnique({
+    const order = await prisma.order.findUnique({
       where: { id },
       include: { items: true },
     })
@@ -43,7 +44,7 @@ export async function DELETE(
     if (session.user.role !== "ADMIN") return NextResponse.json({ error: "Forbidden" }, { status: 403 })
 
     const { id } = await params
-    await db.order.delete({ where: { id } })
+    await prisma.order.delete({ where: { id } })
 
     return NextResponse.json({ success: true })
   } catch (error) {

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { db } from "@/lib/db"
+const prisma = db as any
 
 export const dynamic = "force-dynamic"
 
@@ -13,7 +14,7 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: "Missing orderId or email" }, { status: 400 })
     }
 
-    const order = await db.order.findUnique({
+    const order = await prisma.order.findUnique({
       where: { id: orderId },
       include: { items: true },
     })

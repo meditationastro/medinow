@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { db } from "@/lib/db"
+const prisma = db as any
 import { auth } from "@/auth"
 
 const VALID_ORDER_STATUSES = ["PENDING", "PENDING_PAYMENT", "CONFIRMED", "SHIPPED", "COMPLETED", "CANCELLED"]
@@ -20,7 +21,7 @@ export async function PATCH(
       return NextResponse.json({ error: "Invalid status" }, { status: 400 })
     }
 
-    const updated = await db.order.update({
+    const updated = await prisma.order.update({
       where: { id },
       data: { status },
       include: { items: true },

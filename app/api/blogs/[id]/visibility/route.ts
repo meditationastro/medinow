@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { auth } from "@/auth"
 import { db } from "@/lib/db"
+const prisma = db as any
 
 export async function PATCH(
   req: Request,
@@ -20,7 +21,7 @@ export async function PATCH(
       return new NextResponse("Invalid published value", { status: 400 })
     }
     const { id } = await params
-    const blog = await db.post.update({
+    const blog = await prisma.post.update({
       where: {
         id:id,
       },

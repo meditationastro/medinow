@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { db } from "@/lib/db"
+const prisma = db as any
 import { auth } from "@/auth"
 
 export async function PATCH(
@@ -28,7 +29,7 @@ export async function PATCH(
     }
 
     const { id } = await params
-    const appointment = await db.appointment.update({
+    const appointment = await prisma.appointment.update({
       where: { id },
       data: { status },
     })

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { db } from "@/lib/db"
+const prisma = db as any
 import { auth } from "@/auth"
 import { sendNewOrderEmailToOwner, sendOrderConfirmationEmailToCustomer } from "@/lib/mail"
 
@@ -41,7 +42,7 @@ export async function GET() {
             ],
           }
 
-    const orders = await db.order.findMany({
+    const orders = await prisma.order.findMany({
       where,
       include: { items: true },
       orderBy: { createdAt: "desc" },
@@ -106,7 +107,7 @@ export async function POST(req: Request) {
 
     const initialStatus = provider === "STRIPE" ? "PENDING_PAYMENT" : "PENDING"
 
-    const order = await db.order.create({
+    const order = await prisma.order.create({
       data: {
         fullName,
         email,

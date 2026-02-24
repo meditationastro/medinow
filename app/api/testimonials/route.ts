@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { db } from "@/lib/db"
+const prisma = db as any;
 import { auth } from "@/auth";
 
 export async function POST(req: Request) {
@@ -16,7 +17,7 @@ export async function POST(req: Request) {
       return new NextResponse("Missing required fields", { status: 400 });
     }
 
-    const testimonial = await db.testimonial.create({
+    const testimonial = await prisma.testimonial.create({
       data: {
         message,
         author,
@@ -34,7 +35,7 @@ export async function POST(req: Request) {
 
 export async function GET() {
   try {
-    const testimonials = await db.testimonial.findMany({
+    const testimonials = await prisma.testimonial.findMany({
       orderBy: {
         createdAt: "desc",
       },

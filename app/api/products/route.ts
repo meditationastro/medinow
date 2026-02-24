@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server"
 import { auth } from "@/auth"
 import { db } from "@/lib/db"
+const prisma = db as any
 
 export async function GET() {
   try {
-    const products = await db.product.findMany({
+    const products = await prisma.product.findMany({
       include: {
         versions: true,
         author: {
@@ -39,7 +40,7 @@ export async function POST(req: Request) {
       return new NextResponse("Missing required fields", { status: 400 })
     }
 
-    const product = await db.product.create({
+    const product = await prisma.product.create({
       data: {
         title,
         description,

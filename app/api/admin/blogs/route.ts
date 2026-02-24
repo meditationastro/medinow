@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { auth } from "@/auth"
 import { db } from "@/lib/db"
+const prisma = db as any
 
 export async function GET() {
   try {
@@ -10,7 +11,7 @@ export async function GET() {
       return new NextResponse("Unauthorized", { status: 401 })
     }
 
-    const blogs = await db.post.findMany({
+    const blogs = await prisma.post.findMany({
       select: {
         id: true,
         title: true,

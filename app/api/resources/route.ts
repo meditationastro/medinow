@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
-import { db } from "@/lib/db";
+import { db } from "@/lib/db"
+const prisma = db as any;
 
 export async function GET(req: Request) {
   try {
@@ -9,7 +10,7 @@ export async function GET(req: Request) {
     const session = await auth();
     const isAdmin = session?.user?.role === "ADMIN";
 
-    const resources = await db.resource.findMany({
+    const resources = await prisma.resource.findMany({
       where: {
         ...(category && category !== "all" ? { category } : {}),
         ...(!isAdmin ? { isPublic: true } : {}),
@@ -34,7 +35,7 @@ export async function POST(req: Request) {
     const { title, description, fileUrl, fileType, fileSize, category, isPublic, requiresEmail } = body;
     if (!title || !fileUrl) return new NextResponse("Missing fields", { status: 400 });
 
-    const resource = await db.resource.create({
+    const resource = await prisma.resource.create({
       data: {
         title,
         description: description || "",

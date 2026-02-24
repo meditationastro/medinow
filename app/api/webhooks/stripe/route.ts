@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { headers } from "next/headers"
 import { stripe } from "@/lib/stripe"
 import { db } from "@/lib/db"
+const prisma = db as any
 import { sendNewOrderEmailToOwner, sendOrderConfirmationEmailToCustomer } from "@/lib/mail"
 
 export const runtime = "nodejs"
@@ -30,7 +31,7 @@ export async function POST(req: Request) {
       const orderId = session?.metadata?.orderId
 
       if (orderId) {
-        const order = await db.order.update({
+        const order = await prisma.order.update({
           where: { id: orderId },
           data: {
             paymentStatus: "PAID",
