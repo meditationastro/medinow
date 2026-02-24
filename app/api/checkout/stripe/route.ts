@@ -3,7 +3,7 @@ import type Stripe from "stripe"
 import { auth } from "@/auth"
 import { db } from "@/lib/db"
 import { isStripeEnabled, stripe } from "@/lib/stripe"
-import { PaymentProvider } from "@prisma/client"
+
 
 export const dynamic = "force-dynamic"
 
@@ -59,7 +59,7 @@ export async function POST(req: Request) {
     await db.order.update({
       where: { id: order.id },
       data: {
-        paymentProvider: PaymentProvider.STRIPE,
+        paymentProvider: "STRIPE" as const,
         stripeSessionId: checkout.id,
       },
     })
