@@ -68,43 +68,55 @@ export async function POST(req: Request) {
       },
     })
 
-// Send email using the library function
-const extraDetails = [
-  dateOfBirth ? `Date of Birth: ${dateOfBirth}` : null,
-  timeOfBirth ? `Time of Birth: ${timeOfBirth}` : null,
-  placeOfBirth ? `Place of Birth: ${placeOfBirth}` : null,
-].filter(Boolean).join("
-")
+    // Build extra details string with explicit newline escape sequences
+    const newline = "\n"
+    const extraDetails = [
+      dateOfBirth ? "Date of Birth: " + dateOfBirth : null,
+      timeOfBirth ? "Time of Birth: " + timeOfBirth : null,
+      placeOfBirth ? "Place of Birth: " + placeOfBirth : null,
+    ]
+      .filter(Boolean)
+      .join(newline)
 
-const combinedMessage = [message, extraDetails].filter(Boolean).join("
+    const combinedMessage = [message, extraDetails]
+      .filter(Boolean)
+      .join(newline + newline)
 
-")
-
-await sendBookingEmail({
-  fullName: name,
-  email,
-  phone,
-  service: sessionType,
-  preferredDate,
-  preferredTime,
-  message: combinedMessage || undefined,
-})
+    // Send booking confirmation email
+    await sendBookingEmail({
+      fullName: name,
+      email,
+      phone,
+      service: sessionType,
+      preferredDate,
+      preferredTime,
+      message: combinedMessage || undefined,
+    })
 
     return NextResponse.json(
-      { success: true, message: "Booking request submitted successfully", appointment },
-      { 
+      {
+        success: true,
+        message: "Booking request submitted successfully",
+        appointment,
+      },
+      {
         status: 200,
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Content-Type": "application/json",
-        }
+        },
       }
     )
   } catch (error) {
     console.error("[BOOKING_ERROR]", error)
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Failed to process request. Please try again later." },
+      {
+        error:
+          error instanceof Error
+            ? error.message
+            : "Failed to process request. Please try again later.",
+      },
       { status: 500 }
     )
   }
-} 
+}
