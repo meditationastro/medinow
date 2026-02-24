@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server"
 import { auth } from "@/auth"
 import { db } from "@/lib/db"
-import { UserRole } from "@prisma/client"
 
 export async function GET() {
   try {
@@ -9,14 +8,10 @@ export async function GET() {
       include: {
         versions: true,
         author: {
-          select: {
-            name: true,
-          },
+          select: { name: true },
         },
       },
-      orderBy: {
-        createdAt: "desc",
-      },
+      orderBy: { createdAt: "desc" },
     })
 
     return NextResponse.json(products)
@@ -29,12 +24,12 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const session = await auth()
-    
+
     if (!session) {
       return new NextResponse("Unauthorized", { status: 401 })
     }
 
-    if (session.user.role !== UserRole.ADMIN) {
+    if (session.user.role !== "ADMIN") {
       return new NextResponse("Forbidden", { status: 403 })
     }
 
@@ -58,9 +53,7 @@ export async function POST(req: Request) {
           })),
         },
       },
-      include: {
-        versions: true,
-      },
+      include: { versions: true },
     })
 
     return NextResponse.json(product)
@@ -68,4 +61,4 @@ export async function POST(req: Request) {
     console.error("[PRODUCTS_POST]", error)
     return new NextResponse("Internal Error", { status: 500 })
   }
-} 
+}

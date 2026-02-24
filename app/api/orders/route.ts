@@ -1,12 +1,9 @@
 import { NextResponse } from "next/server"
 import { db } from "@/lib/db"
 import { auth } from "@/auth"
-import { OrderStatus, PaymentStatus, UserRole } from "@prisma/client"
 import { sendNewOrderEmailToOwner, sendOrderConfirmationEmailToCustomer } from "@/lib/mail"
 
 export const dynamic = "force-dynamic"
-
-type PaymentProviderInput = "STRIPE" | "MANUAL" | "NONE"
 
 type OrderItemInput = {
   productId?: string
@@ -15,6 +12,10 @@ type OrderItemInput = {
   unitPrice: number
   quantity: number
 }
+
+const VALID_ROLES = ["ADMIN", "USER"] as const
+const VALID_PROVIDERS = ["NONE", "STRIPE", "MANUAL"] as const
+type PaymentProviderValue = typeof VALID_PROVIDERS[number]
 
 export async function GET() {
   try {
@@ -26,12 +27,12 @@ export async function GET() {
     const userId = session.user.id
     const userEmail = session.user.email
 
-    if (session.user.role !== UserRole.ADMIN && !userId && !userEmail) {
+    if (session.user.role !== "ADMIN" && !userId && !userEmail) {
       return NextResponse.json({ error: "User identity missing" }, { status: 400 })
     }
 
     const where =
-      session.user.role === UserRole.ADMIN
+      session.user.role === "ADMIN"
         ? undefined
         : {
             OR: [
@@ -65,7 +66,7 @@ export async function POST(req: Request) {
       notes?: string
       currency?: string
       items: OrderItemInput[]
-      paymentProvider?: PaymentProviderInput
+      paymentProvider?: string
     }
 
     if (!fullName || !email || !Array.isArray(items) || items.length === 0) {
@@ -98,14 +99,12 @@ export async function POST(req: Request) {
     const session = await auth()
     const userId = session?.user?.id
 
-    // Use string literals instead of enum to avoid stale Prisma client issues
-    const provider: PaymentProviderInput =
+    const provider: PaymentProviderValue =
       paymentProvider === "STRIPE" ? "STRIPE"
       : paymentProvider === "MANUAL" ? "MANUAL"
       : "NONE"
 
-    const initialStatus: OrderStatus =
-      provider === "STRIPE" ? OrderStatus.PENDING_PAYMENT : OrderStatus.PENDING
+    const initialStatus = provider === "STRIPE" ? "PENDING_PAYMENT" : "PENDING"
 
     const order = await db.order.create({
       data: {
@@ -117,7 +116,7 @@ export async function POST(req: Request) {
         total,
         status: initialStatus,
         paymentProvider: provider,
-        paymentStatus: PaymentStatus.UNPAID,
+        paymentStatus: "UNPAID",
         userId,
         items: {
           create: computedItems,

@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server"
 import { auth } from "@/auth"
 import { db } from "@/lib/db"
-import { UserRole } from "@prisma/client"
+
+const VALID_ROLES = ["ADMIN", "USER"] as const
+type RoleValue = typeof VALID_ROLES[number]
 
 export async function PATCH(
   req: Request,
@@ -10,23 +12,22 @@ export async function PATCH(
   try {
     const session = await auth()
     if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    if (session.user.role !== UserRole.ADMIN) return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+    if (session.user.role !== "ADMIN") return NextResponse.json({ error: "Forbidden" }, { status: 403 })
 
     const { id } = await params
     const { role } = await req.json()
 
-    if (!role || !Object.values(UserRole).includes(role as UserRole)) {
+    if (!role || !VALID_ROLES.includes(role as RoleValue)) {
       return NextResponse.json({ error: "Invalid role. Must be ADMIN or USER." }, { status: 400 })
     }
 
-    // Prevent admins from revoking their own admin role
-    if (id === session.user.id && role === UserRole.USER) {
+    if (id === session.user.id && role === "USER") {
       return NextResponse.json({ error: "You cannot revoke your own admin role." }, { status: 400 })
     }
 
     const updated = await db.user.update({
       where: { id },
-      data: { role: role as UserRole },
+      data: { role: role as RoleValue },
       select: { id: true, name: true, email: true, role: true },
     })
 

@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server"
 import { db } from "@/lib/db"
 import { auth } from "@/auth"
-import { OrderStatus, UserRole } from "@prisma/client"
+
+const VALID_ORDER_STATUSES = ["PENDING", "PENDING_PAYMENT", "CONFIRMED", "SHIPPED", "COMPLETED", "CANCELLED"]
 
 export async function PATCH(
   req: Request,
@@ -10,12 +11,12 @@ export async function PATCH(
   try {
     const session = await auth()
     if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    if (session.user.role !== UserRole.ADMIN) return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+    if (session.user.role !== "ADMIN") return NextResponse.json({ error: "Forbidden" }, { status: 403 })
 
     const { id } = await params
     const { status } = await req.json()
 
-    if (!status || !(status in OrderStatus)) {
+    if (!status || !VALID_ORDER_STATUSES.includes(status)) {
       return NextResponse.json({ error: "Invalid status" }, { status: 400 })
     }
 

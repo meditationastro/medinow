@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server"
 import { db } from "@/lib/db"
 import { auth } from "@/auth"
-import { UserRole } from "@prisma/client"
 
 export async function PATCH(
   req: Request,
@@ -14,7 +13,7 @@ export async function PATCH(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    if (session.user.role !== UserRole.ADMIN) {
+    if (session.user.role !== "ADMIN") {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     }
 
@@ -27,14 +26,11 @@ export async function PATCH(
         { status: 400 }
       )
     }
-const {id} = await params
+
+    const { id } = await params
     const appointment = await db.appointment.update({
-      where: {
-        id: id
-      },
-      data: {
-        status
-      }
+      where: { id },
+      data: { status },
     })
 
     return NextResponse.json(appointment)
@@ -45,4 +41,4 @@ const {id} = await params
       { status: 500 }
     )
   }
-} 
+}

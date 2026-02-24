@@ -2,7 +2,6 @@ import { NextResponse } from "next/server"
 import { headers } from "next/headers"
 import { stripe } from "@/lib/stripe"
 import { db } from "@/lib/db"
-import { OrderStatus, PaymentStatus } from "@prisma/client"
 import { sendNewOrderEmailToOwner, sendOrderConfirmationEmailToCustomer } from "@/lib/mail"
 
 export const runtime = "nodejs"
@@ -34,14 +33,13 @@ export async function POST(req: Request) {
         const order = await db.order.update({
           where: { id: orderId },
           data: {
-            paymentStatus: PaymentStatus.PAID,
-            status: OrderStatus.CONFIRMED,
+            paymentStatus: "PAID",
+            status: "CONFIRMED",
             paidAt: new Date(),
           },
           include: { items: true },
         })
 
-        // Optional: send an updated confirmation email
         try {
           const mailPayload = {
             orderId: order.id,

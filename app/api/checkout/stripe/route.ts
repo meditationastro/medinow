@@ -4,7 +4,6 @@ import { auth } from "@/auth"
 import { db } from "@/lib/db"
 import { isStripeEnabled, stripe } from "@/lib/stripe"
 
-
 export const dynamic = "force-dynamic"
 
 export async function POST(req: Request) {
@@ -28,7 +27,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Order email does not match" }, { status: 403 })
     }
 
-    // If logged in, also enforce the order belongs to the user (extra safety)
     const session = await auth()
     if (session?.user?.id && order.userId && session.user.id !== order.userId) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 })
@@ -42,7 +40,7 @@ export async function POST(req: Request) {
         currency: (order.currency || "USD").toLowerCase(),
         unit_amount: Math.round(it.unitPrice * 100),
         product_data: {
-          name: `${it.productTitle}${it.versionTitle ? ` (${it.versionTitle})` : ""}`,
+          name: it.versionTitle ? it.productTitle + " (" + it.versionTitle + ")" : it.productTitle,
         },
       },
     }))
@@ -52,14 +50,14 @@ export async function POST(req: Request) {
       customer_email: order.email,
       line_items,
       metadata: { orderId: order.id },
-      success_url: `${appUrl}/h/order-tracking?orderId=${encodeURIComponent(order.id)}&email=${encodeURIComponent(order.email)}&paid=1`,
-      cancel_url: `${appUrl}/h/order-tracking?orderId=${encodeURIComponent(order.id)}&email=${encodeURIComponent(order.email)}&cancelled=1`,
+      success_url: appUrl + "/h/order-tracking?orderId=" + encodeURIComponent(order.id) + "&email=" + encodeURIComponent(order.email) + "&paid=1",
+      cancel_url: appUrl + "/h/order-tracking?orderId=" + encodeURIComponent(order.id) + "&email=" + encodeURIComponent(order.email) + "&cancelled=1",
     })
 
     await db.order.update({
       where: { id: order.id },
       data: {
-        paymentProvider: "STRIPE" as const,
+        paymentProvider: "STRIPE",
         stripeSessionId: checkout.id,
       },
     })

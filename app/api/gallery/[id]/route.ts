@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server"
 import { db } from "@/lib/db"
 import { auth } from "@/auth"
-import { UserRole } from "@prisma/client"
 
 export async function PATCH(
   req: Request,
@@ -10,7 +9,7 @@ export async function PATCH(
   try {
     const session = await auth()
     if (!session?.user) return new NextResponse("Unauthorized", { status: 401 })
-    if (session.user.role !== UserRole.ADMIN) return new NextResponse("Forbidden", { status: 403 })
+    if (session.user.role !== "ADMIN") return new NextResponse("Forbidden", { status: 403 })
 
     const { id } = await params
     const body = await req.json()
@@ -39,7 +38,7 @@ export async function DELETE(
   try {
     const session = await auth()
     if (!session?.user) return new NextResponse("Unauthorized", { status: 401 })
-    if (session.user.role !== UserRole.ADMIN) return new NextResponse("Forbidden", { status: 403 })
+    if (session.user.role !== "ADMIN") return new NextResponse("Forbidden", { status: 403 })
 
     const { id } = await params
     await db.galleryImage.delete({ where: { id } })

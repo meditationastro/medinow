@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server"
 import { db } from "@/lib/db"
 import { auth } from "@/auth"
-import { UserRole } from "@prisma/client"
 
 export async function GET(
   req: Request,
@@ -10,15 +9,11 @@ export async function GET(
   try {
     const { id } = await params
     const product = await db.product.findUnique({
-      where: {
-        id: id,
-      },
+      where: { id },
       include: {
         versions: true,
         author: {
-          select: {
-            name: true,
-          },
+          select: { name: true },
         },
       },
     })
@@ -32,7 +27,7 @@ export async function GET(
     console.error("[PRODUCT_GET]", error)
     return new NextResponse("Internal Error", { status: 500 })
   }
-} 
+}
 
 export async function PATCH(
   req: Request,
@@ -41,7 +36,7 @@ export async function PATCH(
   try {
     const session = await auth()
     if (!session?.user) return new NextResponse("Unauthorized", { status: 401 })
-    if (session.user.role !== UserRole.ADMIN) return new NextResponse("Forbidden", { status: 403 })
+    if (session.user.role !== "ADMIN") return new NextResponse("Forbidden", { status: 403 })
 
     const { id } = await params
     const body = await req.json()
@@ -51,7 +46,6 @@ export async function PATCH(
       return new NextResponse("Missing required fields", { status: 400 })
     }
 
-    // Replace versions for simplicity
     const updated = await db.product.update({
       where: { id },
       data: {
@@ -84,7 +78,7 @@ export async function DELETE(
   try {
     const session = await auth()
     if (!session?.user) return new NextResponse("Unauthorized", { status: 401 })
-    if (session.user.role !== UserRole.ADMIN) return new NextResponse("Forbidden", { status: 403 })
+    if (session.user.role !== "ADMIN") return new NextResponse("Forbidden", { status: 403 })
 
     const { id } = await params
     await db.product.delete({ where: { id } })
