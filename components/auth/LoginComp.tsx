@@ -61,8 +61,7 @@ function LoginComp() {
             setShowTwoFactor(true);
           }
         })
-        //fix todo
-        // .catch(() => setError("something went wrong"));
+        .catch(() => setError("Something went wrong. Please try again."));
     });
   };
 
@@ -135,8 +134,8 @@ function LoginComp() {
                           <FormControl>
                             <Input
                               {...field}
-                              placeholder="******"
-                              type="Password"
+                              placeholder="••••••••"
+                              type="password"
                               disabled={isPending}
                             />
                           </FormControl>

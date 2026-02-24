@@ -14,7 +14,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
     <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-primary-50 to-secondary-50">
       <div className="container mx-auto px-4 py-6">
         <div className="flex flex-col md:flex-row gap-6">
-          <DashboardSidebar role={session.user.role} email={session.user.email} />
+          <DashboardSidebar role={session.user.role} email={session.user.email} name={session.user.name} />
           <main className="flex-1">{children}</main>
         </div>
       </div>

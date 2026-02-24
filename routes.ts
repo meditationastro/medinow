@@ -10,6 +10,12 @@ export const publicRoutes = [
     "/h/blogs",
     "/h/blog/:id",
     "/h/blog/[id]",
+    "/h/nishruti-meditation",
+    "/h/meditation",
+    "/h/retreats",
+    "/h/resources",
+    "/api/resources",
+    "/api/resources/:id/download",
     "/api/contact",
     "/api/book-appointment",
     "/api/blog",
@@ -43,5 +49,5 @@ export const apiAuthPrefix = "/api/auth";
  * The default redirect path after logging in
  * @type {string}
  */
-export const DEFAULT_LOGIN_REDIRECT = "/h";
+export const DEFAULT_LOGIN_REDIRECT = "/dashboard";
 

@@ -464,6 +464,119 @@ const router = useRouter();
         </div>
       </section>
 
+      {/* Results / Outcomes Section */}
+      <section className="py-24 px-4 bg-white">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-16">
+            <span className="text-amber-600 font-semibold text-sm uppercase tracking-widest">Outcomes</span>
+            <h2 className="text-4xl font-bold text-primary-900 mt-3 mb-4">What You Can Expect</h2>
+            <p className="text-primary-700 text-lg max-w-2xl mx-auto">
+              Every session is unique, but these are the consistent transformations our international clients report.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              { icon: "🔮", category: "Astrology Readings", outcomes: ["Understand your life purpose and karmic path", "Clarity on relationship patterns", "Career direction aligned with your dharma", "Timing guidance for major decisions", "Personalized planetary remedies"] },
+              { icon: "🧘", category: "Meditation & Yoga", outcomes: ["Sustainable daily meditation practice", "Relief from anxiety and mental noise", "Deeper sleep and physical energy", "Spiritual experiences beyond techniques", "Access to inner silence"] },
+              { icon: "🏔️", category: "Nepal Retreats", outcomes: ["Complete reset of mind and spirit", "Direct experience of Himalayan energies", "Deepened personal practice", "Cultural and sacred site immersion", "Lifelong friendships with fellow seekers"] },
+            ].map((service, i) => (
+              <div key={i} className="bg-gradient-to-br from-primary-50 to-indigo-50 rounded-3xl p-8 border border-primary-100 hover:shadow-lg transition-shadow">
+                <div className="text-5xl mb-5">{service.icon}</div>
+                <h3 className="text-xl font-bold text-primary-900 mb-5">{service.category}</h3>
+                <ul className="space-y-3">
+                  {service.outcomes.map((outcome, j) => (
+                    <li key={j} className="flex items-start gap-3 text-sm text-primary-700">
+                      <div className="w-5 h-5 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7"/></svg>
+                      </div>
+                      {outcome}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Service Comparison */}
+      <section className="py-20 px-4 bg-gradient-to-br from-slate-50 to-primary-50">
+        <div className="container mx-auto max-w-4xl">
+          <div className="text-center mb-12">
+            <span className="text-primary-600 font-semibold text-sm uppercase tracking-widest">Which Service is Right for Me?</span>
+            <h2 className="text-3xl font-bold text-primary-900 mt-3 mb-4">Quick Guide</h2>
+          </div>
+          <div className="bg-white rounded-3xl border border-primary-100 shadow-lg overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="bg-primary-900 text-white">
+                    <th className="text-left p-5 font-semibold">I Am Looking For...</th>
+                    <th className="text-center p-5 font-semibold">Best Service</th>
+                    <th className="text-center p-5 font-semibold">Duration</th>
+                    <th className="text-center p-5 font-semibold">Format</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    { need: "Understanding my life purpose & destiny", service: "Astrology Reading", dur: "90 min", fmt: "Online / In-person" },
+                    { need: "Reducing stress and finding inner peace", service: "Meditation Course", dur: "4-6 weeks", fmt: "Online" },
+                    { need: "A complete spiritual reset", service: "Nepal Retreat", dur: "7-14 days", fmt: "In-person" },
+                    { need: "Healing my body and chakras", service: "Sound Healing + Chakra Work", dur: "60 min", fmt: "Online" },
+                    { need: "Relationship or career guidance", service: "Jyotish Consultation", dur: "90 min", fmt: "Online" },
+                    { need: "Understanding my Ayurvedic constitution", service: "Dosha + Astro Reading", dur: "60 min", fmt: "Online" },
+                  ].map((row, i) => (
+                    <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                      <td className="p-4 text-gray-700">{row.need}</td>
+                      <td className="p-4 text-center font-semibold text-primary-800">{row.service}</td>
+                      <td className="p-4 text-center text-gray-600">{row.dur}</td>
+                      <td className="p-4 text-center text-gray-600">{row.fmt}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="p-5 bg-amber-50 border-t border-amber-100 text-center">
+              <p className="text-amber-800 text-sm">Not sure? Book a free 15-minute discovery call and Niaadim will recommend the perfect service for your situation.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials specific to services */}
+      <section className="py-20 px-4 bg-white">
+        <div className="container mx-auto max-w-5xl">
+          <div className="text-center mb-12">
+            <span className="text-amber-600 font-semibold text-sm uppercase tracking-widest">Client Voices</span>
+            <h2 className="text-3xl font-bold text-primary-900 mt-3 mb-4">Words from the Journey</h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              { name: "Laura M.", country: "🇫🇷 France", service: "Astrology Reading", quote: "Niaadim saw things in my chart I had never considered. His reading was precise, compassionate, and completely changed how I understand my relationships.", stars: 5 },
+              { name: "Marcus K.", country: "🇩🇪 Germany", service: "Nepal Retreat", quote: "The 10-day retreat was one of the most profound experiences of my life. The combination of astrology, meditation, and Nepal's sacred sites is extraordinary.", stars: 5 },
+              { name: "Sofia R.", country: "🇮🇹 Italy", service: "Meditation Course", quote: "I had tried many meditation apps and courses before. Nishruti meditation is something fundamentally different — it goes beyond technique into something real.", stars: 5 },
+            ].map((t, i) => (
+              <div key={i} className="bg-gradient-to-br from-primary-50 to-white rounded-2xl border border-primary-100 p-6 hover:shadow-md transition-shadow">
+                <div className="flex gap-1 mb-4">
+                  {[...Array(t.stars)].map((_,j) => <span key={j} className="text-amber-400 text-lg">★</span>)}
+                </div>
+                <p className="text-gray-700 italic text-sm leading-relaxed mb-5">"{t.quote}"</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-700 to-indigo-800 flex items-center justify-center text-white font-bold">
+                    {t.name[0]}
+                  </div>
+                  <div>
+                    <div className="font-semibold text-gray-900 text-sm">{t.name} {t.country}</div>
+                    <div className="text-primary-600 text-xs">{t.service}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+
       {/* Call to Action */}
       <section className="relative z-10 py-20 px-4">
         <div className="container mx-auto text-center">

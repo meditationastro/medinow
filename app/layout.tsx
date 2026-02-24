@@ -19,8 +19,32 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Meditation Astro",
-  description: "Meditation, healing sessions, remedies, and spiritual guidance.",
+  title: {
+    default: "MeditationAstro – Vedic Astrology, Meditation & Spiritual Retreats in Nepal",
+    template: "%s | MeditationAstro",
+  },
+  description: "Discover Vedic astrology consultations, Nishruti meditation courses, spiritual retreats in Nepal, and mantra practices with Niaadim. Serving seekers from Germany, France, Italy, Switzerland & USA.",
+  keywords: ["Vedic astrology", "meditation Nepal", "Nishruti meditation", "Jyotish", "spiritual retreats Nepal", "mantra practice", "Niaadim", "astrology consultation", "meditation online course"],
+  authors: [{ name: "Niaadim", url: "https://meditationastro.com" }],
+  creator: "Niaadim – MeditationAstro",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://meditationastro.com",
+    siteName: "MeditationAstro",
+    title: "MeditationAstro – Vedic Astrology, Meditation & Spiritual Retreats",
+    description: "Ancient Vedic wisdom for modern seekers. Astrology readings, Nishruti meditation, Nepal retreats.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "MeditationAstro – Sacred Wisdom for Self-Discovery",
+    description: "Vedic astrology, Nishruti meditation, sacred Nepal retreats. Guided by Niaadim.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+  },
 };
 
 export default async function RootLayout({

@@ -384,6 +384,169 @@ Together, Sat-Chit-Ananda represents the transcendental, non-dual nature of the 
         </div>
       </section>
 
+      {/* Mission & Vision */}
+      <section className="relative z-10 py-16 px-4 bg-gradient-to-br from-indigo-50 to-purple-50">
+        <div className="container mx-auto">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold text-primary-900 mb-4">Mission, Vision & Values</h2>
+              <p className="text-xl text-primary-700 max-w-2xl mx-auto">The principles that guide every session, retreat, and teaching</p>
+            </div>
+            <div className="grid md:grid-cols-3 gap-8">
+              {[
+                {
+                  icon: "🎯",
+                  title: "Mission",
+                  text: "To awaken the seeker within every individual by offering holistic, soul-aligned paths through the timeless wisdom of Vedic astrology and the power of deep meditation — making ancient knowledge accessible to the modern world.",
+                },
+                {
+                  icon: "🌟",
+                  title: "Vision",
+                  text: "A world where every conscious being has access to the inner tools that bring clarity, purpose, and peace. We envision a global community of awakened souls living in alignment with their dharma and cosmic blueprint.",
+                },
+                {
+                  icon: "💎",
+                  title: "Values",
+                  text: "Authenticity in every teaching. Compassion for every seeker. Scientific rigor combined with spiritual depth. Respect for all traditions. Commitment to your transformation — not just sessions, but genuine life change.",
+                },
+              ].map((item) => (
+                <Card key={item.title} className="border-indigo-200 hover:shadow-xl transition-shadow bg-white">
+                  <CardContent className="p-8 text-center">
+                    <div className="text-5xl mb-4">{item.icon}</div>
+                    <h3 className="text-2xl font-bold text-primary-900 mb-4">{item.title}</h3>
+                    <p className="text-primary-700 leading-relaxed">{item.text}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Nishruti System Deep Dive */}
+      <section className="relative z-10 py-20 px-4 bg-white">
+        <div className="container mx-auto max-w-5xl">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-primary-900 mb-4">The Nishruti Meditation System</h2>
+            <p className="text-xl text-primary-700">Developed by Niaadim — a unique synthesis of Vedic science and modern consciousness research</p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            {[
+              {
+                sanskrit: "श्रुति",
+                name: "Shruti",
+                subtitle: "That Which is Heard",
+                color: "from-amber-100 to-orange-100",
+                border: "border-amber-300",
+                text: "The foundation of divine knowledge. Sacred revelations like the Vedas — received as outer truth from cosmic intelligence, heard by the ancient rishis in deep meditative states.",
+                num: "01",
+              },
+              {
+                sanskrit: "अनुश्रुति",
+                name: "Anusruti",
+                subtitle: "That Which Follows",
+                color: "from-teal-100 to-emerald-100",
+                border: "border-teal-300",
+                text: "The internalization of teachings through the teacher-student relationship (guru-shishya parampara). Disciplined daily practice that transforms intellectual understanding into living wisdom.",
+                num: "02",
+              },
+              {
+                sanskrit: "निश्रुती",
+                name: "Nishruti",
+                subtitle: "Transcendental Hearing",
+                color: "from-purple-100 to-indigo-100",
+                border: "border-purple-300",
+                text: "Beyond physical sound — the soundless sound. The Anahata Nada that arises spontaneously from within. The dissolution of the boundary between the listener and the sound. Pure awareness.",
+                num: "03",
+              },
+            ].map((stage) => (
+              <div key={stage.name} className={`bg-gradient-to-br ${stage.color} rounded-2xl border-2 ${stage.border} p-6`}>
+                <div className="text-4xl font-bold text-primary-300 mb-2">{stage.num}</div>
+                <div className="text-3xl font-bold text-primary-800 mb-1">{stage.sanskrit}</div>
+                <div className="font-bold text-primary-900 text-xl mb-1">{stage.name}</div>
+                <div className="text-sm text-primary-600 italic mb-4">{stage.subtitle}</div>
+                <p className="text-primary-800 text-sm leading-relaxed">{stage.text}</p>
+              </div>
+            ))}
+          </div>
+          <Card className="bg-gradient-to-r from-primary-900 to-indigo-900 text-white border-0">
+            <CardContent className="p-8 text-center">
+              <p className="text-xl leading-relaxed text-white/90 italic">
+                &ldquo;Nishruti is the culmination — an experience of causeless grace, where the practitioner connects directly with the divine, beyond words, thoughts, or form. It is the meeting point of the individual and the universal.&rdquo;
+              </p>
+              <p className="mt-4 text-amber-300 font-semibold">— Niaadim</p>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* International Reach */}
+      <section className="relative z-10 py-16 px-4 bg-gradient-to-br from-slate-50 to-primary-50">
+        <div className="container mx-auto max-w-5xl">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-primary-900 mb-4">Our Global Community</h2>
+            <p className="text-xl text-primary-700">Serving conscious seekers across continents</p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
+            {[
+              { flag: "🇩🇪", country: "Germany" },
+              { flag: "🇫🇷", country: "France" },
+              { flag: "🇮🇹", country: "Italy" },
+              { flag: "🇨🇭", country: "Switzerland" },
+              { flag: "🇺🇸", country: "USA" },
+            ].map((c) => (
+              <div key={c.country} className="text-center bg-white rounded-2xl py-6 border border-primary-100 hover:shadow-md transition-shadow">
+                <div className="text-5xl mb-2">{c.flag}</div>
+                <div className="font-semibold text-primary-800">{c.country}</div>
+              </div>
+            ))}
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              { quote: "My retreat in Nepal was life-changing. The depth of astrology and energy work was beyond anything I've ever experienced.", name: "Laura", country: "France" },
+              { quote: "The online mentorship gave me clarity and tools to navigate a major life transition. Truly transformational.", name: "Mark", country: "USA" },
+              { quote: "Incredible mix of ancient knowledge and modern insights. The birth chart reading opened my eyes to patterns I'd never seen.", name: "Julia", country: "Germany" },
+            ].map((t) => (
+              <Card key={t.name} className="border-primary-200 bg-white">
+                <CardContent className="p-6">
+                  <Quote className="w-6 h-6 text-primary-300 mb-3" />
+                  <p className="text-primary-800 italic leading-relaxed mb-4 text-sm">{t.quote}</p>
+                  <div className="font-semibold text-primary-900">{t.name}</div>
+                  <div className="text-primary-600 text-sm">{t.country}</div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Spiritual Journey Timeline */}
+      <section className="relative z-10 py-20 px-4 bg-white">
+        <div className="container mx-auto max-w-3xl">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-primary-900 mb-4">Niaadim&apos;s Spiritual Journey</h2>
+            <p className="text-xl text-primary-700">Decades of seeking, learning, and synthesizing ancient wisdom</p>
+          </div>
+          <div className="relative">
+            <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-primary-200" />
+            {[
+              { year: "Early Life", title: "Seeds of Seeking", desc: "Born into a family with deep Vedic traditions in Nepal. First encounters with meditation and astrology planted seeds for a lifelong journey." },
+              { year: "10+ Years", title: "Jyotish Studies", desc: "Deep immersion in Vedic astrology under traditional Himalayan teachers. Mastery of planetary periods, nakshatras, and karmic analysis." },
+              { year: "Study Phase", title: "Meditation Lineages", desc: "Training in multiple meditation traditions including Vipassana, Zen shikantaza, Tibetan Vajrayana, and Vedic mantra practices." },
+              { year: "Discovery", title: "Nishruti System Born", desc: "Synthesis of years of practice and teaching culminates in the Nishruti Meditation system — a unique three-stage method for transcendental awareness." },
+              { year: "Ongoing", title: "Global Teaching", desc: "Online and in-person teaching to students from Europe, USA, and across Asia. Personal consultations, retreats, and the digital programs at MeditationAstro.com." },
+            ].map((item, i) => (
+              <div key={i} className="relative pl-16 pb-10 last:pb-0">
+                <div className="absolute left-3 top-1 w-6 h-6 rounded-full bg-primary-800 border-4 border-white shadow" />
+                <div className="text-xs font-bold text-primary-500 uppercase tracking-widest mb-1">{item.year}</div>
+                <h3 className="text-xl font-bold text-primary-900 mb-2">{item.title}</h3>
+                <p className="text-primary-700 leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Consciousness Section */}
       <section className="relative z-10 py-16 px-4 bg-gradient-to-r from-primary-100/30 to-secondary-100/30">
         <div className="container mx-auto">
@@ -434,12 +597,130 @@ Together, Sat-Chit-Ananda represents the transcendental, non-dual nature of the 
             <Button
               size="lg"
               variant="outline"
-              onClick={() => window.open("mailto:prefabhousenepal@gmail.com")}
+              onClick={() => window.open("mailto:meditationastro@gmail.com")}
               className="border-primary-600 text-primary-700 hover:bg-blue-600 hover:text-white px-8 py-4 text-lg"
             >
               <Mail className="w-5 h-5 mr-2" />
               Connect via Email
             </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Core Philosophy Section */}
+      <section className="py-24 px-4 bg-white">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-16">
+            <span className="text-amber-600 font-semibold text-sm uppercase tracking-widest">Our Philosophy</span>
+            <h2 className="text-4xl font-bold text-primary-900 mt-3 mb-4">The Pillars of Our Teaching</h2>
+            <p className="text-primary-700 text-lg max-w-2xl mx-auto">
+              Every teaching from Niaadim rests on four interconnected pillars that form a complete system of human flourishing.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-8">
+            {[
+              { icon: "🔭", title: "Jyotish — The Eye of the Veda", color: "from-indigo-500 to-purple-600", bg: "bg-indigo-50 border-indigo-100",
+                points: ["Birth chart as the map of your soul's journey", "Dasha system for precise life timing", "Nakshatra wisdom for deepest self-understanding", "Remedial measures rooted in classical texts"],
+                desc: "Vedic astrology (Jyotish) is the foundational diagnostic tool — it reveals your karmic inheritance, your dharmic purpose, and the timing of life's key chapters." },
+              { icon: "🧘", title: "Nishruti — Beyond Listening", color: "from-amber-500 to-orange-600", bg: "bg-amber-50 border-amber-100",
+                points: ["Transcending ordinary sensory consciousness", "Direct access to inner silence", "Integration of Vedic sound science", "Progressive stages: Shruti → Anusruti → Nishruti"],
+                desc: "Nishruti is a meditation system developed by Niaadim from deep study of Vedic sound science. It goes beyond ordinary listening into the listening behind listening." },
+              { icon: "🌿", title: "Ayurveda — Living in Harmony", color: "from-green-500 to-emerald-600", bg: "bg-green-50 border-green-100",
+                points: ["Dosha assessment and balancing", "Seasonal and diurnal rhythms", "Food as medicine and consciousness", "Lifestyle aligned with cosmic cycles"],
+                desc: "Ayurveda completes the picture by showing how to live in the body in alignment with your astrological constitution and the rhythms of nature." },
+              { icon: "🔊", title: "Nada — The Science of Sound", color: "from-rose-500 to-pink-600", bg: "bg-rose-50 border-rose-100",
+                points: ["Mantras as vibrational remedies", "Singing bowls and sacred instruments", "Chakra harmonics and resonance", "Sound as a bridge between worlds"],
+                desc: "Sound and vibration underpin all of creation. Our sound healing work uses Himalayan singing bowls, mantras, and Vedic chanting to restore harmonic balance." },
+            ].map((pillar, i) => (
+              <div key={i} className={`rounded-3xl border p-8 ${pillar.bg} hover:shadow-lg transition-shadow`}>
+                <div className="flex items-start gap-5 mb-6">
+                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${pillar.color} flex items-center justify-center text-3xl shadow-lg flex-shrink-0`}>
+                    {pillar.icon}
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">{pillar.title}</h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">{pillar.desc}</p>
+                  </div>
+                </div>
+                <ul className="space-y-2">
+                  {pillar.points.map((point, j) => (
+                    <li key={j} className="flex items-center gap-2 text-sm text-gray-700">
+                      <div className={`w-4 h-4 rounded-full bg-gradient-to-br ${pillar.color} flex items-center justify-center flex-shrink-0`}>
+                        <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7"/></svg>
+                      </div>
+                      {point}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Teaching Approach */}
+      <section className="py-20 px-4 bg-gradient-to-br from-slate-900 to-primary-950 text-white">
+        <div className="container mx-auto max-w-5xl">
+          <div className="text-center mb-14">
+            <span className="text-amber-400 font-semibold text-sm uppercase tracking-widest">Teaching Approach</span>
+            <h2 className="text-4xl font-bold text-white mt-3 mb-4">How Niaadim Teaches</h2>
+            <p className="text-white/70 text-lg max-w-2xl mx-auto">
+              Our approach combines ancient rigor with modern accessibility — rooted in lineage, alive in application.
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { icon: "📖", title: "Textual Foundations", desc: "Sessions are grounded in classical Jyotish texts — Brihat Parashara Hora Shastra, Sarvartha Chintamani, and Vedic Upanishads." },
+              { icon: "🎯", title: "Precision Over Generality", desc: "No sun-sign horoscopes. Your individual birth chart, exact planetary positions, and specific Dasha period are always the foundation." },
+              { icon: "💊", title: "Practical Remedies", desc: "Every session concludes with specific, doable remedies: mantras, gemstones, rituals, lifestyle changes — nothing vague or theoretical." },
+              { icon: "🌍", title: "Cross-Cultural Bridge", desc: "Niaadim has deep experience bridging Vedic worldviews with the questions and contexts of European and Western seekers." },
+              { icon: "🤝", title: "Ongoing Relationship", desc: "We are not one-time consultants. Many clients return quarterly, annually, or for retreats — evolving together over years." },
+              { icon: "❤️", title: "Compassion First", desc: "Every reading is delivered with deep compassion, sensitivity, and a genuine desire for your highest wellbeing — not just information." },
+            ].map((item, i) => (
+              <div key={i} className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors">
+                <div className="text-4xl mb-4">{item.icon}</div>
+                <h3 className="font-bold text-white text-lg mb-2">{item.title}</h3>
+                <p className="text-white/60 text-sm leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Credentials / Lineage */}
+      <section className="py-20 px-4 bg-gradient-to-br from-amber-50 to-orange-50">
+        <div className="container mx-auto max-w-5xl">
+          <div className="text-center mb-14">
+            <span className="text-primary-600 font-semibold text-sm uppercase tracking-widest">Background & Lineage</span>
+            <h2 className="text-4xl font-bold text-primary-900 mt-3 mb-4">Authentic Credentials</h2>
+            <p className="text-primary-700 text-lg max-w-2xl mx-auto">
+              Niaadim&apos;s knowledge comes not from books alone but from decades of practice, study under masters, and lived experience.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-6">
+            {[
+              { year: "Early Life", title: "Born into Spiritual Tradition", desc: "Raised in a family with deep roots in Nepali spiritual traditions, Niaadim was exposed to Vedic chanting, temple rituals, and astrology from childhood.", badge: "Foundation" },
+              { year: "Study Years", title: "Jyotish Under Traditional Masters", desc: "Studied Vedic astrology formally under lineage teachers in Nepal, covering Brihat Parashara Hora Shastra, Jaimini sutras, and predictive astrology.", badge: "Jyotish" },
+              { year: "Realization", title: "Nishruti — A Direct Discovery", desc: "Through intensive meditation retreats, Niaadim discovered the Nishruti listening meditation — a direct experiential method beyond technique.", badge: "Meditation" },
+              { year: "Practice", title: "20+ Years of Client Work", desc: "Over two decades of consultations with clients from 15+ countries — astrology readings, retreats, meditation courses, and ongoing guidance.", badge: "Experience" },
+              { year: "Current", title: "Global Teaching & Retreats", desc: "Now offering online consultations worldwide and periodic in-person retreats at our Khumaltar, Lalitpur center near Kathmandu.", badge: "Global" },
+              { year: "Research", title: "Neuroplasticity & Spirituality", desc: "Active exploration of the intersection of modern neuroscience and ancient meditation — bridging Eastern wisdom with Western science.", badge: "Innovation" },
+            ].map((cred, i) => (
+              <div key={i} className="bg-white rounded-2xl border border-amber-100 shadow-sm hover:shadow-md transition-shadow p-6 flex gap-5">
+                <div className="flex-shrink-0">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white font-bold text-xs text-center leading-tight shadow-lg px-1">
+                    {cred.year}
+                  </div>
+                </div>
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <h3 className="font-bold text-gray-900">{cred.title}</h3>
+                    <span className="text-xs bg-primary-100 text-primary-800 px-2 py-0.5 rounded-full">{cred.badge}</span>
+                  </div>
+                  <p className="text-gray-600 text-sm leading-relaxed">{cred.desc}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>

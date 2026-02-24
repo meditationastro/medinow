@@ -1,22 +1,12 @@
 "use client"
 import Link from "next/link"
-import { Menu, X, ChevronDown, Sun, Moon, Star, BookOpen, Music, Download, Wrench, Home, Phone, Users, ShoppingBag, Image, Sparkles, LogIn, User, Shield, LogOut } from "lucide-react"
+import { Menu, ChevronDown, Sun, Moon, Star, BookOpen, Wrench, Home, Phone, Users, ShoppingBag, Image, Sparkles, LogIn, User, Shield, LogOut } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { useState, useRef, useEffect } from "react"
-import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { useSession, signOut } from "next-auth/react"
-import {
-  Accordion, AccordionItem, AccordionTrigger, AccordionContent,
-} from "@/components/ui/accordion"
-import {
-  DropdownMenu as ShadDropdown,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion"
 
 const NAV = [
   { label: "Home", href: "/h", icon: Home },
@@ -70,7 +60,7 @@ const NAV = [
   { label: "Contact", href: "/h/contact", icon: Phone },
 ]
 
-function NavDropdownItem({ item, onClose }: { item: typeof NAV[0]; onClose: () => void }) {
+function NavDropdownItem({ item }: { item: typeof NAV[0] }) {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
@@ -101,22 +91,78 @@ function NavDropdownItem({ item, onClose }: { item: typeof NAV[0]; onClose: () =
       </button>
       {open && (
         <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-72 bg-white rounded-2xl shadow-2xl border border-gray-100 p-2 z-50">
-          <div className="grid gap-0.5">
-            {item.children!.map((child) => (
-              <Link
-                key={child.href}
-                href={child.href}
-                onClick={() => setOpen(false)}
-                className="flex items-start gap-3 p-3 rounded-xl hover:bg-amber-50 transition-colors group"
-              >
-                <span className="text-xl leading-none mt-0.5">{child.icon}</span>
-                <div>
-                  <div className="font-semibold text-primary-900 text-sm group-hover:text-amber-700">{child.label}</div>
-                  <div className="text-xs text-gray-500 mt-0.5">{child.desc}</div>
-                </div>
+          {item.children!.map((child) => (
+            <Link
+              key={child.href}
+              href={child.href}
+              onClick={() => setOpen(false)}
+              className="flex items-start gap-3 p-3 rounded-xl hover:bg-amber-50 transition-colors group"
+            >
+              <span className="text-xl leading-none mt-0.5">{child.icon}</span>
+              <div>
+                <div className="font-semibold text-primary-900 text-sm group-hover:text-amber-700">{child.label}</div>
+                <div className="text-xs text-gray-500 mt-0.5">{child.desc}</div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function UserMenu({ userName, isAdmin }: { userName: string; isAdmin: boolean }) {
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
+    }
+    document.addEventListener("mousedown", handleClick)
+    return () => document.removeEventListener("mousedown", handleClick)
+  }, [])
+
+  return (
+    <div ref={ref} className="relative hidden sm:block">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="flex items-center gap-1.5 border border-blue-200 text-blue-800 text-xs h-8 px-3 rounded-md hover:bg-blue-50 transition-colors font-medium"
+      >
+        <User className="w-3.5 h-3.5" />
+        <span className="max-w-[80px] truncate">{userName}</span>
+        <ChevronDown className={cn("w-3 h-3 transition-transform", open && "rotate-180")} />
+      </button>
+      {open && (
+        <div className="absolute top-full right-0 mt-2 w-52 bg-white rounded-2xl shadow-2xl border border-gray-100 p-1.5 z-50">
+          <Link href="/dashboard" onClick={() => setOpen(false)}
+            className="flex items-center gap-2 px-3 py-2.5 rounded-xl hover:bg-gray-50 text-sm text-gray-700">
+            <User className="w-4 h-4 text-gray-400" /> Dashboard
+          </Link>
+          <Link href="/dashboard?tab=appointments" onClick={() => setOpen(false)}
+            className="flex items-center gap-2 px-3 py-2.5 rounded-xl hover:bg-gray-50 text-sm text-gray-700">
+            <Star className="w-4 h-4 text-gray-400" /> My Bookings
+          </Link>
+          <Link href="/dashboard?tab=orders" onClick={() => setOpen(false)}
+            className="flex items-center gap-2 px-3 py-2.5 rounded-xl hover:bg-gray-50 text-sm text-gray-700">
+            <ShoppingBag className="w-4 h-4 text-gray-400" /> My Orders
+          </Link>
+          {isAdmin && (
+            <>
+              <div className="border-t border-gray-100 my-1" />
+              <Link href="/admin" onClick={() => setOpen(false)}
+                className="flex items-center gap-2 px-3 py-2.5 rounded-xl hover:bg-blue-50 text-sm text-blue-800 font-semibold">
+                <Shield className="w-4 h-4 text-blue-600" /> Admin Panel
               </Link>
-            ))}
-          </div>
+            </>
+          )}
+          <div className="border-t border-gray-100 my-1" />
+          <button
+            onClick={() => { setOpen(false); signOut({ callbackUrl: "/h" }) }}
+            className="flex items-center gap-2 px-3 py-2.5 rounded-xl hover:bg-red-50 text-sm text-red-600 w-full text-left"
+          >
+            <LogOut className="w-4 h-4" /> Sign Out
+          </button>
         </div>
       )}
     </div>
@@ -149,62 +195,18 @@ export function Header() {
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-0.5">
             {NAV.map((item) => (
-              <NavDropdownItem key={item.label} item={item} onClose={() => {}} />
+              <NavDropdownItem key={item.label} item={item} />
             ))}
           </nav>
 
           {/* Right Actions */}
           <div className="flex items-center gap-2">
-            {/* User account menu */}
             {isLoggedIn ? (
-              <ShadDropdown>
-                <DropdownMenuTrigger asChild>
-                  <Button size="sm" variant="outline" className="hidden sm:flex items-center gap-1.5 border-blue-200 text-blue-800 text-xs h-8">
-                    <User className="w-3.5 h-3.5" />
-                    <span className="max-w-[80px] truncate">{userName}</span>
-                    <ChevronDown className="w-3 h-3" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuItem asChild>
-                    <Link href="/dashboard" className="flex items-center gap-2">
-                      <User className="w-4 h-4" /> Dashboard
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/dashboard?tab=appointments" className="flex items-center gap-2">
-                      <Star className="w-4 h-4" /> My Bookings
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/dashboard?tab=orders" className="flex items-center gap-2">
-                      <ShoppingBag className="w-4 h-4" /> My Orders
-                    </Link>
-                  </DropdownMenuItem>
-                  {isAdmin && (
-                    <>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem asChild>
-                        <Link href="/admin" className="flex items-center gap-2 text-blue-700 font-semibold">
-                          <Shield className="w-4 h-4" /> Admin Panel
-                        </Link>
-                      </DropdownMenuItem>
-                    </>
-                  )}
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    onClick={() => signOut({ callbackUrl: "/h" })}
-                    className="flex items-center gap-2 text-red-600 cursor-pointer"
-                  >
-                    <LogOut className="w-4 h-4" /> Sign Out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </ShadDropdown>
+              <UserMenu userName={userName} isAdmin={isAdmin} />
             ) : (
               <Link href="/auth/login">
                 <Button size="sm" variant="outline" className="hidden sm:flex items-center gap-1.5 border-blue-300 text-blue-800 text-xs h-8 hover:bg-blue-50">
-                  <LogIn className="w-3.5 h-3.5" />
-                  Login
+                  <LogIn className="w-3.5 h-3.5" /> Login
                 </Button>
               </Link>
             )}
@@ -274,7 +276,8 @@ export function Header() {
                             </Button>
                           </Link>
                         )}
-                        <Button variant="ghost" className="w-full text-red-600" onClick={() => signOut({ callbackUrl: "/h" })}>
+                        <Button variant="ghost" className="w-full text-red-600"
+                          onClick={() => { setIsMenuOpen(false); signOut({ callbackUrl: "/h" }) }}>
                           <LogOut className="w-4 h-4 mr-2" /> Sign Out
                         </Button>
                       </>
