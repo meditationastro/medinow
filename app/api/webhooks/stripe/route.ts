@@ -53,7 +53,7 @@ export async function POST(req: Request) {
             status: order.status,
             paymentProvider: order.paymentProvider,
             paymentStatus: order.paymentStatus,
-            items: order.items.map((it) => ({
+            items: order.items.map((it: { productTitle: string; versionTitle?: string | null; unitPrice: number; quantity: number; lineTotal: number }) => ({
               productTitle: it.productTitle,
               versionTitle: it.versionTitle,
               unitPrice: it.unitPrice,

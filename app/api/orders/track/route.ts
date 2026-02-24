@@ -35,7 +35,7 @@ export async function GET(req: Request) {
       total: order.total,
       createdAt: order.createdAt,
       updatedAt: order.updatedAt,
-      items: order.items.map((it) => ({
+      items: order.items.map((it: { productTitle: string; versionTitle?: string | null; unitPrice: number; quantity: number; lineTotal: number }) => ({
         productTitle: it.productTitle,
         versionTitle: it.versionTitle,
         quantity: it.quantity,
